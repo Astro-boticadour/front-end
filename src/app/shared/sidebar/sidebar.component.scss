@@ -1,0 +1,20 @@
+section{
+    display: flex;
+    flex-direction: row;
+    justify-content:left;
+    gap: 20px;
+    align-items: center;
+    padding: 20px 20px;
+}
+
+section > img {
+    width: 60px;
+    height: auto;
+}
+
+:host {
+    width: 300px;
+    height: 100vh;
+    display:inline-block;
+    background-color: #fff;
+}
