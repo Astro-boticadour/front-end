@@ -13,8 +13,49 @@ section > img {
 }
 
 :host {
+    padding: 30px;
     width: 300px;
     height: 100vh;
     display:inline-block;
-    background-color: #fff;
+    background: rgb(2,0,36);
+    background: linear-gradient(170deg, rgba(2,0,36,0.8393558106836485) 0%, rgba(79,23,80,1) 100%);
+}
+
+.role-section {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    .info-role{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        .role-icon{
+            filter: invert(79%) sepia(1%) saturate(362%) hue-rotate(58deg) brightness(109%) contrast(98%);
+            width: 30px;
+            height: auto;
+        }
+    }
+
+    #switch-role-button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 13px;
+        background-color: #FFC700;
+        &:hover{
+            cursor: pointer;
+            background-color: #ddad00;
+        }
+        .icon{
+            width: 30px;
+            height: auto;
+        }
+    }
 }

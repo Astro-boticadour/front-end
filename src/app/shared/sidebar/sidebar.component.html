@@ -2,3 +2,24 @@
     <img src="/assets/logo-roboticadour-simplifie.svg" alt="Logo de Astro">
     <h2 class="text-center">Astro</h2>
 </section>
+
+<section class="role-section">
+    <ng-container [ngSwitch]="role">
+        <div class="info-role" *ngSwitchCase="'utilisateur'">
+            <img class="icon role-icon" src="/assets/precision-manufacturing-icon.svg">
+            <p>Utilisateur</p>
+        </div>
+        <div class="info-role" *ngSwitchCase="'visualiseur'">
+            <img class="icon role-icon" src="/assets/query-stats-icon.svg">
+            <p>Visualisation</p>
+        </div>
+        <div class="info-role" *ngSwitchCase="'administrateur'">
+            <img class="icon role-icon" src="/assets/passkey-icon.svg">
+            <p>Administrateur</p>
+        </div>
+    </ng-container>
+
+    <button id="switch-role-button">
+        <img class="icon" src="/assets/manage-accounts-icon.svg" alt="Changer d'utilisation">
+    </button>
+</section>
