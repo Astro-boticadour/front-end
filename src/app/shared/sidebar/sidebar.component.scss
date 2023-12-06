@@ -1,61 +1,118 @@
-section{
-    display: flex;
-    flex-direction: row;
-    justify-content:left;
-    gap: 20px;
-    align-items: center;
-    padding: 20px 20px;
-}
-
-section > img {
-    width: 60px;
-    height: auto;
+section {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  gap: 20px;
+  align-items: center;
 }
 
 :host {
-    padding: 30px;
-    width: 300px;
-    height: 100vh;
-    display:inline-block;
-    background: rgb(2,0,36);
-    background: linear-gradient(170deg, rgba(2,0,36,0.8393558106836485) 0%, rgba(79,23,80,1) 100%);
+  width: 340px;
+  height: 100vh;
+  display: flex;
+  flex-flow: column;
+  background: #161313;
+
+  padding: 10px 15px;
+  box-sizing: border-box;
+}
+
+.app-title {
+  padding: 20px;
+
+  img {
+    width: 55px;
+    height: auto;
+  }
+}
+
+.navigation-section {
+  color: #A9A9A9;
+  height: 100%;
+  nav {
+    height: 100%;
+    width: 100%;
+    padding: 50px 10px;
+    box-sizing: border-box;
+
+    section li {
+    }
+
+    ul {
+      width: 100%;
+
+      li {
+        cursor: pointer;
+        border-radius: 4px;
+        height: 50px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+
+        &:hover {
+          background-color: #80808020;
+        }
+      }
+    }
+  }
 }
 
 .role-section {
-    position: absolute;
-    bottom: 0;
+  padding: 20px 10px 20px 20px;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+
+  .info-role {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
-    .info-role{
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        .role-icon{
-            filter: invert(79%) sepia(1%) saturate(362%) hue-rotate(58deg) brightness(109%) contrast(98%);
-            width: 30px;
-            height: auto;
-        }
+    .role-icon {
+      filter: invert(76%) sepia(0%) saturate(1015%) hue-rotate(316deg) brightness(86%) contrast(102%);
+      width: 30px;
+      height: auto;
     }
+  }
 
-    #switch-role-button{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border: none;
-        border-radius: 13px;
-        background-color: #FFC700;
-        &:hover{
-            cursor: pointer;
-            background-color: #ddad00;
-        }
-        .icon{
-            width: 30px;
-            height: auto;
-        }
+  #switch-role-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ffc700;
+    &:hover {
+      cursor: pointer;
+      outline: 2px solid white;
+      outline-offset: 2px;
     }
+    .icon {
+      width: 30px;
+      height: auto;
+    }
+  }
+}
+
+@media (max-width : 750px) {
+  :host {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    background: #161313;
+
+    padding: 10px 15px;
+    box-sizing: border-box;
+  }
+
 }
