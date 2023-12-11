@@ -1,54 +1,63 @@
-<section class="app-title">
-  <img src="/assets/logo-roboticadour-simplifie.svg" alt="Logo de Astro" />
-  <h2 class="text-center">Astro</h2>
-</section>
+<div *ngIf="!displayMenu && mobileDesign" (click)="toggleMenu()" class="menu-button button-icon">
+  <img class="icon" src="/assets/icons/Menu.svg" />
+</div>
 
-<section class="navigation-section">
-<ng-container [ngSwitch]="role">
-  <nav *ngSwitchCase="'visualiseur'">
-    <section>
-      <div>
-        <h3>Tableaux</h3>
-      </div>
-      <ul></ul>
-    </section>
-    <section>
-      <div>
-        <h3>Graphiques</h3>
-      </div>
-      <ul></ul>
-    </section>
-  </nav>
-  <nav *ngSwitchCase="'administrateur'">
-    <ul>
-      <li><p>Utilisateurs</p></li>
-      <li><p>Projets</p></li>
-      <li><p>Ressources</p></li>
-    </ul>
-  </nav>
-</ng-container>
-</section>
-<section class="role-section">
-  <ng-container [ngSwitch]="role">
-    <div class="info-role" *ngSwitchCase="'utilisateur'">
-      <img class="icon role-icon" src="/assets/icons/Precision.svg" />
-      <p>Utilisateur</p>
-    </div>
-    <div class="info-role" *ngSwitchCase="'visualiseur'">
-      <img class="icon role-icon" src="/assets/icons/Query.svg" />
-      <p>Visualisation</p>
-    </div>
-    <div class="info-role" *ngSwitchCase="'administrateur'">
-      <img class="icon role-icon" src="/assets/icons/PassKey.svg" />
-      <p>Administrateur</p>
-    </div>
-  </ng-container>
+<aside *ngIf="(displayMenu && mobileDesign) || !mobileDesign">
+  <div (click)="toggleMenu()" class="close-button" *ngIf="displayMenu && mobileDesign">
+    <img class="icon" src="/assets/icons/Close.svg" />
+  </div>
+  <section class="app-title">
+    <img src="/assets/logo-roboticadour-simplifie.svg" alt="Logo de Astro" />
+    <h2 class="text-center">Astro</h2>
+  </section>
 
-  <button id="switch-role-button">
-    <img
-      class="icon"
-      src="/assets/icons/Manage.svg"
-      alt="Changer d'utilisation"
-    />
-  </button>
-</section>
+  <section class="navigation-section">
+    <ng-container [ngSwitch]="role">
+      <nav *ngSwitchCase="'visualiseur'">
+        <section>
+          <div>
+            <h3>Tableaux</h3>
+          </div>
+          <ul></ul>
+        </section>
+        <section>
+          <div>
+            <h3>Graphiques</h3>
+          </div>
+          <ul></ul>
+        </section>
+      </nav>
+      <nav *ngSwitchCase="'administrateur'">
+        <ul>
+          <li><p>Utilisateurs</p></li>
+          <li><p>Projets</p></li>
+          <li><p>Ressources</p></li>
+        </ul>
+      </nav>
+    </ng-container>
+  </section>
+  <section class="role-section">
+    <ng-container [ngSwitch]="role">
+      <div class="info-role" *ngSwitchCase="'utilisateur'">
+        <img class="icon role-icon" src="/assets/icons/Precision.svg" />
+        <p>Utilisateur</p>
+      </div>
+      <div class="info-role" *ngSwitchCase="'visualiseur'">
+        <img class="icon role-icon" src="/assets/icons/Query.svg" />
+        <p>Visualisation</p>
+      </div>
+      <div class="info-role" *ngSwitchCase="'administrateur'">
+        <img class="icon role-icon" src="/assets/icons/PassKey.svg" />
+        <p>Administrateur</p>
+      </div>
+    </ng-container>
+
+    <button id="switch-role-button" class="button-icon">
+      <img
+        class="icon"
+        src="/assets/icons/Manage.svg"
+        alt="Changer d'utilisation"
+      />
+    </button>
+  </section>
+</aside>
