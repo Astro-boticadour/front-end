@@ -8,17 +8,25 @@ import { Component, HostListener } from '@angular/core';
 export class SidebarComponent {
   role = "administrateur";
   mobileDesign: boolean;
+  displayMenu: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    event.target.innerWidth;
-  }
+    if (window.innerWidth < 750) {
+      this.mobileDesign = true
+    } else {
+      this.mobileDesign = false
+    }  }
 
   constructor() {
-    if (window.innerWidth < 340) {
+    if (window.innerWidth < 750) {
       this.mobileDesign = true
     } else {
       this.mobileDesign = false
     }
+  }
+
+  public toggleMenu(): void {
+    this.displayMenu = !this.displayMenu
   }
 }

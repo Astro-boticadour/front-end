@@ -29,3 +29,16 @@ p {
     font-size: 16px;
     font-weight: 400;
 }
+
+.close-button, .menu-button {
+  cursor:pointer;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  img {
+    width: 40px;
+    height: auto;
+    filter: invert(76%) sepia(0%) saturate(1015%) hue-rotate(316deg)
+      brightness(86%) contrast(102%);
+  }
+}
