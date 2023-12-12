@@ -6,13 +6,13 @@ section {
   align-items: center;
 }
 
-
 aside {
   width: 340px;
   height: 100vh;
   display: flex;
   flex-flow: column;
   background: #161313;
+  z-index: 100;
 
   padding: 10px 15px;
   box-sizing: border-box;
@@ -124,9 +124,13 @@ aside {
 }
 
 @media (max-width: 750px) {
+
   aside {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-flow: column;
     background: #161313;
