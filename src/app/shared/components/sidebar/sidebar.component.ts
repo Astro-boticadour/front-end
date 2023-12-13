@@ -12,14 +12,14 @@ export class SidebarComponent {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    if (window.innerWidth < 750) {
+    if (window.innerWidth < 1080) {
       this.mobileDesign = true
     } else {
       this.mobileDesign = false
     }  }
 
   constructor() {
-    if (window.innerWidth < 750) {
+    if (window.innerWidth < 1080) {
       this.mobileDesign = true
     } else {
       this.mobileDesign = false
