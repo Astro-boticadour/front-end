@@ -7,7 +7,7 @@
     <img class="icon" src="/assets/icons/Close.svg" />
   </div>
   <section class="app-title">
-    <img src="/assets/logo-roboticadour-simplifie.svg" alt="Logo de Astro" />
+    <img id="logo-roboticadour-simplifie" src="/assets/logo-roboticadour-simplifie.svg" alt="Logo de Astro" />
     <h2 class="text-center">Astro</h2>
   </section>
 
@@ -29,9 +29,9 @@
       </nav>
       <nav *ngSwitchCase="'administrateur'">
         <ul>
-          <li routerLink="user"><p>Utilisateurs</p></li>
-          <li><p>Projets</p></li>
-          <li><p>Ressources</p></li>
+          <li routerLink="/administration/users"><p class="menu-item">Utilisateurs</p></li>
+          <li routerLink="/administration/projects"><p class="menu-item">Projets</p></li>
+          <li routerLink="/administration/ressources"><p class="menu-item">Ressources</p></li>
         </ul>
       </nav>
     </ng-container>
@@ -40,7 +40,7 @@
     <ng-container [ngSwitch]="role">
       <div class="info-role" *ngSwitchCase="'utilisateur'">
         <img class="icon role-icon" src="/assets/icons/Precision.svg" />
-        <p>Utilisateur</p>
+        <p >Utilisateur</p>
       </div>
       <div class="info-role" *ngSwitchCase="'visualiseur'">
         <img class="icon role-icon" src="/assets/icons/Query.svg" />
