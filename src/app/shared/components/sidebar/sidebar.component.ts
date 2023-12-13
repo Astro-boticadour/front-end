@@ -6,7 +6,7 @@ import { Component, HostListener } from '@angular/core';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
-  role = "administrateur";
+  activity = "administrateur";
   mobileDesign: boolean;
   displayMenu: boolean = false;
 

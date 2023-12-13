@@ -57,7 +57,7 @@ aside {
   }
 }
 
-.role-section {
+.activity-section {
   padding: 20px 10px 20px 20px;
   width: 100%;
   bottom: 0;
@@ -66,13 +66,13 @@ aside {
   justify-content: space-between;
   box-sizing: border-box;
 
-  .info-role {
+  .info-activity {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 20px;
-    .role-icon {
+    .activity-icon {
       filter: invert(76%) sepia(0%) saturate(1015%) hue-rotate(316deg)
         brightness(86%) contrast(102%);
       width: 30px;
@@ -80,7 +80,7 @@ aside {
     }
   }
 
-  #switch-role-button {
+  #switch-activity-button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -124,11 +124,11 @@ aside {
 
 
   .menu-item{
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   
-  .role-icon{
-    width: 300px;
+  .icon{
+    width: 40px !important;
   }
   
   #logo-roboticadour-simplifie{
@@ -138,6 +138,11 @@ aside {
   h2{
     font-size: 3rem;
   }
+
+  .actual-activity{
+    font-size: 1.3rem;
+  }
+
   aside {
     position: absolute;
     top: 0px;

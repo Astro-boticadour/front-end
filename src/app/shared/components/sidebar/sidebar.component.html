@@ -12,7 +12,7 @@
   </section>
 
   <section class="navigation-section">
-    <ng-container [ngSwitch]="role">
+    <ng-container [ngSwitch]="activity">
       <nav *ngSwitchCase="'visualiseur'">
         <section>
           <div>
@@ -36,23 +36,23 @@
       </nav>
     </ng-container>
   </section>
-  <section class="role-section">
-    <ng-container [ngSwitch]="role">
-      <div class="info-role" *ngSwitchCase="'utilisateur'">
-        <img class="icon role-icon" src="/assets/icons/Precision.svg" />
-        <p >Utilisateur</p>
+  <section class="activity-section">
+    <ng-container [ngSwitch]="activity">
+      <div class="info-activity" *ngSwitchCase="'utilisateur'">
+        <img class="icon activity-icon" src="/assets/icons/Precision.svg" />
+        <p class="actual-activity">Utilisateur</p>
       </div>
-      <div class="info-role" *ngSwitchCase="'visualiseur'">
-        <img class="icon role-icon" src="/assets/icons/Query.svg" />
-        <p>Visualisation</p>
+      <div class="info-activity" *ngSwitchCase="'visualiseur'">
+        <img class="icon activity-icon" src="/assets/icons/Query.svg" />
+        <p class="actual-activity">Visualisation</p>
       </div>
-      <div class="info-role" *ngSwitchCase="'administrateur'">
-        <img class="icon role-icon" src="/assets/icons/PassKey.svg" />
-        <p>Administrateur</p>
+      <div class="info-activity" *ngSwitchCase="'administrateur'">
+        <img class="icon activity-icon" src="/assets/icons/PassKey.svg" />
+        <p class="actual-activity">Administrateur</p>
       </div>
     </ng-container>
 
-    <button id="switch-role-button" class="button-icon">
+    <button id="switch-activity-button" class="button-icon">
       <img
         class="icon"
         src="/assets/icons/Manage.svg"
