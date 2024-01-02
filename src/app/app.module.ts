@@ -13,10 +13,7 @@ import { TableModule } from 'primeng/table';
 import { AdministrationModule } from './pages/administration/administration.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SidebarComponent
-  ],
+  declarations: [AppComponent, SidebarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -26,9 +23,9 @@ import { AdministrationModule } from './pages/administration/administration.modu
     FormsModule,
     HttpClientModule,
     TableModule,
-    AdministrationModule
+    AdministrationModule,
   ],
   providers: [DialogService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

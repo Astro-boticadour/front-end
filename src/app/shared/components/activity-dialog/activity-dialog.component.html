@@ -54,13 +54,22 @@
     </section>
   </div>
   <div *ngSwitchCase="'user'">
-    <ul class="user-selection">
-      <li *ngFor="let user of userList">
-        <button           (click)="switchTo(ActivityEnum.User, user)"
-        >
-          <p>{{ user.login }} {{ user.firstName }} {{ user.lastName }}</p>
+    <div class="input-field">
+      <label for="label">Nom</label>
+      <input pInputText id="label" (input)="filterUser($event)" />
+    </div>
+
+    <ul *ngIf="filteredUserList != []; else placeholder" class="user-selection">
+      <li *ngFor="let user of filteredUserList">
+        <button (click)="switchTo(ActivityEnum.User, user)">
+          <p>
+            <b>{{ user.login }}</b> {{ user.firstName }} {{ user.lastName }}
+          </p>
         </button>
       </li>
     </ul>
+    <ng-template #placeholder>
+      <p-progressSpinner></p-progressSpinner>
+    </ng-template>
   </div>
 </section>

@@ -1,4 +1,4 @@
-<p-card header="Title">
+<p-card header="Ajout d'un projet">
   <section>
     <section id="projects-form">
       <div class="input-field">
@@ -7,14 +7,22 @@
       </div>
       <div>
         <label for="dateStart">Date de début</label>
-        <p-calendar pInputText id="dateStart" [(ngModel)]="dateStart" ></p-calendar>
+        <p-calendar
+          pInputText
+          id="dateStart"
+          [(ngModel)]="dateStart"
+        ></p-calendar>
       </div>
       <div>
         <label for="dateEnd">Date de fin</label>
-        <p-calendar pInputText id="dateEnd" [(ngModel)]="dateEnd" ></p-calendar>
+        <p-calendar pInputText id="dateEnd" [(ngModel)]="dateEnd"></p-calendar>
       </div>
       <div>
-        <p-checkbox [binary]="true" inputId="isFinished" [(ngModel)]="isFinished"></p-checkbox>
+        <p-checkbox
+          [binary]="true"
+          inputId="isFinished"
+          [(ngModel)]="isFinished"
+        ></p-checkbox>
         <label for="isFinished">Est clos</label>
       </div>
       <div class="input-field">
@@ -27,68 +35,65 @@
     </section>
   </section>
 </p-card>
-<p-card header="Title">
-<section *ngIf="tableData !== undefined; else placeholder">
-  <p-table
-  #dt
-    [value]="tableData"
-    [paginator]="true"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [rows]="10"
-    [showCurrentPageReport]="true"
-    [globalFilterFields]="['label', 'description']"
-    currentPageReportTemplate="{last} sur les {totalRecords} projets"
+<p-card header="Consultation des projets">
+  <section *ngIf="tableData !== undefined; else placeholder">
+    <p-table
+      #dt
+      [value]="tableData"
+      [paginator]="true"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [rows]="10"
+      [showCurrentPageReport]="true"
+      [globalFilterFields]="['label', 'description']"
+      currentPageReportTemplate="{last} sur les {totalRecords} projets"
     >
-  <ng-template pTemplate="caption">
-    <div class="table-header">
-        Liste des projets
-        <span class="p-input-icon-left">
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+          Liste des projets
+          <span class="p-input-icon-left">
             <i class="pi pi-search"></i>
-            <input pInputText type="text" [(ngModel)]="inputValue" (input)="dt.filterGlobal(inputValue, 'contains')" placeholder="Rechercher..." />
-        </span>
-    </div>
-</ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th>
-          Nom
-        </th>
-        <th>
-          Date de début
-        </th>
-        <th>
-          Date de fin
-        </th>
-        <th>
-          Est clos
-        </th>
-        <th>Description</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-project>
-      <tr>
-        <td>{{ project.label }}</td>
-        <td>{{ project.dateStart }}</td>
-        <td>{{ project.dateEnd }}</td>
-        <td>
-          <img
-            class="icon"
-            *ngIf="project.isFinished; else notFinished"
-            class="icon role-icon"
-            src="/assets/icons/Done.svg"
-          />
-          <ng-template #notFinished>
-            <img class="icon" src="/assets/icons/Close.svg" />
-          </ng-template>
-        </td>
+            <input
+              pInputText
+              type="text"
+              [(ngModel)]="inputValue"
+              (input)="dt.filterGlobal(inputValue, 'contains')"
+              placeholder="Rechercher..."
+            />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nom</th>
+          <th>Date de début</th>
+          <th>Date de fin</th>
+          <th>Est clos</th>
+          <th>Description</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-project>
+        <tr>
+          <td>{{ project.label }}</td>
+          <td>{{ project.dateStart }}</td>
+          <td>{{ project.dateEnd }}</td>
+          <td>
+            <img
+              class="icon"
+              *ngIf="project.isFinished; else notFinished"
+              class="icon role-icon"
+              src="/assets/icons/Done.svg"
+            />
+            <ng-template #notFinished>
+              <img class="icon" src="/assets/icons/Close.svg" />
+            </ng-template>
+          </td>
 
-        <td>{{ project.description }}</td>
-      </tr>
-    </ng-template>
-
-  </p-table>
-</section>
-<ng-template #placeholder>
-  <p>Récupération des données...</p>
-</ng-template>
+          <td>{{ project.description }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+  <ng-template #placeholder>
+    <p-progressSpinner></p-progressSpinner>
+  </ng-template>
 </p-card>

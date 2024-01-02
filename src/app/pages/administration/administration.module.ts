@@ -10,13 +10,9 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
-  declarations: [
-    ProjectsComponent,
-    UsersComponent,
-    RessourcesComponent
-  ],
+  declarations: [ProjectsComponent, UsersComponent, RessourcesComponent],
   imports: [
     CommonModule,
     TableModule,
@@ -26,7 +22,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     ButtonModule,
     InputTextModule,
     CalendarModule,
-    CheckboxModule
-  ]
+    CheckboxModule,
+    ProgressSpinnerModule,
+  ],
 })
-export class AdministrationModule { }
+export class AdministrationModule {}

@@ -57,8 +57,8 @@ export class ApiService {
         data.result.map((data: any) => {
           return {
             login: data.login,
-            firstName: data.nom,
-            lastName: data.prenom,
+            firstName: data.prenom,
+            lastName: data.nom,
             pole: data.pole,
           } as user;
         })

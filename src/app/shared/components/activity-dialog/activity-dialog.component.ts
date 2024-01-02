@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { ActivityService } from '../../services/activity.service';
-import { Observable } from 'rxjs';
+import { Observable, filter } from 'rxjs';
 import { ActivityEnum } from '../../enums/activity.model';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../services/auth.service';
 import { user } from '../../interfaces/utilisateur.interface';
 import { ApiService } from '../../services/api.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-activity-dialog',
@@ -20,6 +21,7 @@ import { ApiService } from '../../services/api.service';
     FormsModule,
     PasswordModule,
     ButtonModule,
+    ProgressSpinnerModule,
   ],
   templateUrl: './activity-dialog.component.html',
   styleUrl: './activity-dialog.component.scss',
@@ -33,16 +35,20 @@ export class ActivityDialogComponent {
   public ActivityEnum = ActivityEnum; // makes ActivityEnum enum available in the template
 
   public userList: user[] = [];
+  public filteredUserList: user[] = [];
 
   constructor(
     private activityService: ActivityService,
     private authService: AuthService,
     private apiService: ApiService
   ) {
-    this.dialogPart = "activity";
+    this.dialogPart = 'activity';
     this.currentActivity$ = this.activityService.getCurrentObservable();
 
-    this.apiService.getAllUser().subscribe(data => this.userList = data)
+    this.apiService.getAllUser().subscribe((data) => {
+      this.userList = data;
+      this.filterUser();
+    });
   }
 
   public switchTo(targetActivity: ActivityEnum, user?: user) {
@@ -55,6 +61,23 @@ export class ActivityDialogComponent {
       if (data) {
         this.activityService.setActivity(ActivityEnum.Administrator);
         this.activityService.closeActivityDialog();
+      }
+    });
+  }
+
+  public filterUser(event?: Event) {
+    let filterValue = event
+      ? (event.target as HTMLInputElement)?.value.toUpperCase()
+      : '';
+
+    this.filteredUserList = [];
+    this.userList.forEach((data: user) => {
+      if (
+        data.firstName.toUpperCase().includes(filterValue) ||
+        data.lastName.toUpperCase().includes(filterValue) ||
+        data.login.toUpperCase().includes(filterValue)
+      ) {
+        this.filteredUserList.push(data);
       }
     });
   }
