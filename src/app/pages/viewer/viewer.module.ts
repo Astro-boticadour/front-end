@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ViewerComponent } from './viewer.component';
+import { GraphComponent } from './graph/graph.component';
+import { TableComponent } from './table/table.component';
 
 
 
 @NgModule({
   declarations: [
-    ViewerComponent
+    GraphComponent,
+    TableComponent
   ],
   imports: [
     CommonModule

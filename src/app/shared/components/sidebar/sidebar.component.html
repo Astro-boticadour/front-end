@@ -12,47 +12,41 @@
   </section>
 
   <section class="navigation-section">
-    <ng-container [ngSwitch]="activity">
-      <nav *ngSwitchCase="'visualiseur'">
-        <section>
-          <div>
-            <h3>Tableaux</h3>
-          </div>
-          <ul></ul>
-        </section>
-        <section>
-          <div>
-            <h3>Graphiques</h3>
-          </div>
-          <ul></ul>
-        </section>
-      </nav>
-      <nav *ngSwitchCase="'administrateur'">
+    <ng-container [ngSwitch]="this.activityObservable | async">
+      <nav *ngSwitchCase="ActivityEnum.Viewer">
         <ul>
-          <li routerLink="/administration/users"><p class="menu-item">Utilisateurs</p></li>
-          <li routerLink="/administration/projects"><p class="menu-item">Projets</p></li>
-          <li routerLink="/administration/ressources"><p class="menu-item">Ressources</p></li>
+          <li (click)="closeDialogIfMobile()" routerLink="/view/table"><p class="menu-item">Tableaux</p></li>
+          <li (click)="closeDialogIfMobile()" routerLink="/view/graphique"><p class="menu-item">Graphiques</p></li>
+        </ul>
+      </nav>
+      <nav *ngSwitchCase="ActivityEnum.Administrator">
+        <ul>
+          <li (click)="closeDialogIfMobile()" routerLink="/administration/users"><p class="menu-item">Utilisateurs</p></li>
+          <li (click)="closeDialogIfMobile()" routerLink="/administration/projects"><p class="menu-item">Projets</p></li>
+          <li (click)="closeDialogIfMobile()" routerLink="/administration/ressources"><p class="menu-item">Ressources</p></li>
         </ul>
       </nav>
     </ng-container>
   </section>
-  <section class="activity-section">
-    <ng-container [ngSwitch]="activity">
-      <div class="info-activity" *ngSwitchCase="'utilisateur'">
-        <img class="icon activity-icon" src="/assets/icons/Precision.svg" />
-        <p class="actual-activity">Utilisateur</p>
+
+  <section class="role-section">
+
+    <ng-container [ngSwitch]="this.activityObservable | async">
+      <div class="info-role" *ngSwitchCase="ActivityEnum.User">
+        <img class="icon role-icon" src="/assets/icons/Precision.svg" />
+        <p >Utilisateur</p>
       </div>
-      <div class="info-activity" *ngSwitchCase="'visualiseur'">
-        <img class="icon activity-icon" src="/assets/icons/Query.svg" />
-        <p class="actual-activity">Visualisation</p>
+      <div class="info-role" *ngSwitchCase="ActivityEnum.Viewer">
+        <img class="icon role-icon" src="/assets/icons/Query.svg" />
+        <p>Visualisation</p>
       </div>
-      <div class="info-activity" *ngSwitchCase="'administrateur'">
-        <img class="icon activity-icon" src="/assets/icons/PassKey.svg" />
-        <p class="actual-activity">Administrateur</p>
+      <div class="info-role" *ngSwitchCase="ActivityEnum.Administrator">
+        <img class="icon role-icon" src="/assets/icons/PassKey.svg" />
+        <p>Administrateur</p>
       </div>
     </ng-container>
 
-    <button id="switch-activity-button" class="button-icon">
+    <button id="switch-role-button" class="button-icon" (click)="toggleActivitySelection()">
       <img
         class="icon"
         src="/assets/icons/Manage.svg"

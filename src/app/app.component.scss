@@ -1,9 +1,11 @@
-@media (max-width: 750px) {
+.main-content {
+  width: 100%;
+}
 
-  section {
+@media (max-width: 750px) {
+  .main-content {
     position: absolute;
     top: 0px;
     left: 0px;
   }
-
 }

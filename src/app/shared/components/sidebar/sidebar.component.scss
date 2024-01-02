@@ -6,14 +6,16 @@ section {
   align-items: center;
 }
 
+aside, .menu-button, .close-button {
+  z-index: 100;
+}
+
 aside {
   width: 340px;
   height: 100vh;
   display: flex;
   flex-flow: column;
   background: #161313;
-  z-index: 100;
-
   padding: 10px 15px;
   box-sizing: border-box;
 }
@@ -57,7 +59,7 @@ aside {
   }
 }
 
-.activity-section {
+.role-section {
   padding: 20px 10px 20px 20px;
   width: 100%;
   bottom: 0;
@@ -66,13 +68,13 @@ aside {
   justify-content: space-between;
   box-sizing: border-box;
 
-  .info-activity {
+  .info-role {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 20px;
-    .activity-icon {
+    .role-icon {
       filter: invert(76%) sepia(0%) saturate(1015%) hue-rotate(316deg)
         brightness(86%) contrast(102%);
       width: 30px;
@@ -80,7 +82,7 @@ aside {
     }
   }
 
-  #switch-activity-button {
+  #switch-role-button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -120,17 +122,29 @@ aside {
   }
 }
 
-@media (max-width: 1080px) {
+.role-selection-section {
+  padding: 20px 10px 20px 20px;
+  width: 100%;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  ul {
+    width: 100%;
+
+  }
+}
+
+@media (max-width: 750px) {
 
 
   .menu-item{
-    font-size: 1.3rem;
+    font-size: 1.5rem;
   }
-  
-  .icon{
-    width: 40px !important;
+
+  .role-icon{
+    width: 300px;
   }
-  
+
   #logo-roboticadour-simplifie{
     width: 80px;
   }
@@ -138,11 +152,6 @@ aside {
   h2{
     font-size: 3rem;
   }
-
-  .actual-activity{
-    font-size: 1.3rem;
-  }
-
   aside {
     position: absolute;
     top: 0px;
