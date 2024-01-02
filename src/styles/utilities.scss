@@ -42,3 +42,10 @@ p {
       brightness(86%) contrast(102%);
   }
 }
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+}

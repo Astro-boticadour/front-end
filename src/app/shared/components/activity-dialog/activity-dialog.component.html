@@ -1,0 +1,66 @@
+<section id="dialog-body" [ngSwitch]="dialogPart">
+  <ul class="activity-selection" *ngSwitchCase="'activity'">
+    <li>
+      <button
+        (click)="dialogPart = 'user'"
+        [disabled]="(currentActivity$ | async) === ActivityEnum.User"
+      >
+        <img class="icon role-icon" src="/assets/icons/Precision.svg" />
+        <p>Utilisateur</p>
+      </button>
+    </li>
+    <li>
+      <button
+        (click)="switchTo(ActivityEnum.Viewer)"
+        [disabled]="(currentActivity$ | async) === ActivityEnum.Viewer"
+      >
+        <img class="icon role-icon" src="/assets/icons/Query.svg" />
+        <p>Visualisation</p>
+      </button>
+    </li>
+    <li>
+      <button
+        (click)="dialogPart = 'admin'"
+        [disabled]="(currentActivity$ | async) === ActivityEnum.Administrator"
+      >
+        <img class="icon role-icon" src="/assets/icons/PassKey.svg" />
+        <p>Administrateur</p>
+      </button>
+    </li>
+  </ul>
+  <div (keydown.enter)="connect()" *ngSwitchCase="'admin'">
+    <section id="login-section">
+      <div class="input-field">
+        <label for="username">Nom d'utilisateur</label>
+        <input pInputText id="username" [(ngModel)]="username" />
+      </div>
+      <div class="input-field">
+        <label for="username">Mot de passe</label>
+        <p-password
+          [(ngModel)]="password"
+          [toggleMask]="true"
+          [feedback]="false"
+        ></p-password>
+      </div>
+    </section>
+    <section id="action-section">
+      <p-button
+        (click)="dialogPart = 'activity'"
+        [outlined]="true"
+        severity="secondary"
+        label="Retour"
+      ></p-button>
+      <p-button label="Se connecter" (click)="connect()"></p-button>
+    </section>
+  </div>
+  <div *ngSwitchCase="'user'">
+    <ul class="user-selection">
+      <li *ngFor="let user of userList">
+        <button           (click)="switchTo(ActivityEnum.User, user)"
+        >
+          <p>{{ user.login }} {{ user.firstName }} {{ user.lastName }}</p>
+        </button>
+      </li>
+    </ul>
+  </div>
+</section>

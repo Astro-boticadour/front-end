@@ -1,0 +1,75 @@
+.activity-selection, .user-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  li {
+    list-style: none;
+
+    button {
+      min-width: 30rem;
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      border: none;
+      background-color: #80808015;
+      border-radius: 4px;
+      padding: 5px 20px;
+
+      &:hover:not(:disabled) {
+        background-color: #80808032;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.role-icon {
+  width: 30px;
+  height: auto;
+  filter: invert(4%) sepia(24%) saturate(357%) hue-rotate(315deg)
+    brightness(95%) contrast(92%);
+}
+
+.activity-selection button:disabled {
+  filter: opacity(0.3);
+}
+
+#login-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  width: min-content;
+}
+#action-section {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  justify-content: space-between;
+}
+
+#dialog-body {
+  min-width: 400px;
+}
+
+@media (max-width: 750px) {
+  .activity-selection li button, .user-selection li button {
+    min-width: unset;
+    width: 100%;
+  }
+  #dialog-body {
+    min-width: unset;
+  }
+
+  ::ng-deep .p-dynamic-dialog {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  ::ng-deep {
+    .p-dialog {
+      max-height: unset;
+    }
+  }
+}

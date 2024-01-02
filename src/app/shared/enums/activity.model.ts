@@ -1,5 +1,5 @@
 export enum ActivityEnum {
-  User,
-  Administrator,
-  Viewer,
+  User = "user",
+  Administrator = "administrator",
+  Viewer = "viewer",
 }

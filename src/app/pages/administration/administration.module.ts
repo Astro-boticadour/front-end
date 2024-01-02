@@ -1,15 +1,32 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdministrationComponent } from './administration.component';
-
-
+import { TableModule } from 'primeng/table';
+import { ProjectsComponent } from './projects/projects.component';
+import { UsersComponent } from './users/users.component';
+import { RessourcesComponent } from './ressources/ressources.component';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
-    AdministrationComponent
+    ProjectsComponent,
+    UsersComponent,
+    RessourcesComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    TableModule,
+    FormsModule,
+    InputTextModule,
+    CardModule,
+    ButtonModule,
+    InputTextModule,
+    CalendarModule,
+    CheckboxModule
   ]
 })
 export class AdministrationModule { }
