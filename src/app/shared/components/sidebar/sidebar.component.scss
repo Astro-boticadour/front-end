@@ -6,7 +6,9 @@ section {
   align-items: center;
 }
 
-aside, .menu-button, .close-button {
+aside,
+.menu-button,
+.close-button {
   z-index: 100;
 }
 
@@ -100,7 +102,8 @@ aside {
     .icon {
       width: 35px;
       height: auto;
-      filter: invert(4%) sepia(24%) saturate(357%) hue-rotate(315deg) brightness(95%) contrast(92%);
+      filter: invert(4%) sepia(24%) saturate(357%) hue-rotate(315deg)
+        brightness(95%) contrast(92%);
     }
   }
 }
@@ -118,7 +121,8 @@ aside {
   background-color: #ffc700;
 
   img {
-    filter: invert(4%) sepia(24%) saturate(357%) hue-rotate(315deg) brightness(95%) contrast(92%);
+    filter: invert(4%) sepia(24%) saturate(357%) hue-rotate(315deg)
+      brightness(95%) contrast(92%);
   }
 }
 
@@ -130,28 +134,26 @@ aside {
 
   ul {
     width: 100%;
-
   }
 }
 
 @media (max-width: 750px) {
-
-
-  .menu-item{
+  .menu-item {
     font-size: 1.5rem;
   }
 
-  .role-icon{
+  .role-icon {
     width: 300px;
   }
 
-  #logo-roboticadour-simplifie{
+  #logo-roboticadour-simplifie {
     width: 80px;
   }
 
-  h2{
+  h2 {
     font-size: 3rem;
   }
+
   aside {
     position: absolute;
     top: 0px;
