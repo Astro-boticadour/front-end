@@ -2,34 +2,39 @@ import { Component, HostListener } from '@angular/core';
 import { ActivityService } from '../../services/activity.service';
 import { Observable } from 'rxjs';
 import { ActivityEnum } from '../../enums/activity.model';
+import { UserInformationService } from '../../services/user-information.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
   public mobileDesign: boolean;
   public showRoleChangement: boolean = false;
   public displayMenu: boolean = false;
   public activityObservable: Observable<ActivityEnum>;
-  public ActivityEnum = ActivityEnum // makes ActivityEnum enum available in the template
+  public ActivityEnum = ActivityEnum; // makes ActivityEnum enum available in the template
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     if (window.innerWidth < 750) {
-      this.mobileDesign = true
+      this.mobileDesign = true;
     } else {
-      this.mobileDesign = false
-    }  }
+      this.mobileDesign = false;
+    }
+  }
 
-  constructor(private activityService: ActivityService) {
-    this.activityObservable = this.activityService.getCurrentObservable()
+  constructor(
+    private activityService: ActivityService,
+    private readonly userInformationService: UserInformationService
+  ) {
+    this.activityObservable = this.activityService.getCurrentObservable();
 
     if (window.innerWidth < 750) {
-      this.mobileDesign = true
+      this.mobileDesign = true;
     } else {
-      this.mobileDesign = false
+      this.mobileDesign = false;
     }
   }
 
@@ -41,14 +46,18 @@ export class SidebarComponent {
       this.activityService.showActivityDialog()
     }
     */
-    this.displayMenu = !this.displayMenu
+    this.displayMenu = !this.displayMenu;
   }
 
   public toggleActivitySelection(): void {
-    this.activityService.showActivityDialog()
+    this.activityService.showActivityDialog();
   }
 
   public closeDialogIfMobile(): void {
-    if (this.mobileDesign) this.toggleMenu()
+    if (this.mobileDesign) this.toggleMenu();
+  }
+
+  public getCurrentUserLogin(): string {
+    return this.userInformationService.getUserInformation()?.login ?? '';
   }
 }

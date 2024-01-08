@@ -1,13 +1,25 @@
-<div *ngIf="!displayMenu && mobileDesign" (click)="toggleMenu()" class="menu-button button-icon">
+<div
+  *ngIf="!displayMenu && mobileDesign"
+  (click)="toggleMenu()"
+  class="menu-button button-icon"
+>
   <img class="icon" src="/assets/icons/Menu.svg" />
 </div>
 
 <aside *ngIf="(displayMenu && mobileDesign) || !mobileDesign">
-  <div (click)="toggleMenu()" class="close-button" *ngIf="displayMenu && mobileDesign">
+  <div
+    (click)="toggleMenu()"
+    class="close-button"
+    *ngIf="displayMenu && mobileDesign"
+  >
     <img class="icon" src="/assets/icons/Close.svg" />
   </div>
   <section class="app-title">
-    <img id="logo-roboticadour-simplifie" src="/assets/logo-roboticadour-simplifie.svg" alt="Logo de Astro" />
+    <img
+      id="logo-roboticadour-simplifie"
+      src="/assets/logo-roboticadour-simplifie.svg"
+      alt="Logo de Astro"
+    />
     <h2 class="text-center">Astro</h2>
   </section>
 
@@ -15,26 +27,63 @@
     <ng-container [ngSwitch]="this.activityObservable | async">
       <nav *ngSwitchCase="ActivityEnum.Viewer">
         <ul>
-          <li (click)="closeDialogIfMobile()" routerLink="/view/table"><p class="menu-item">Tableaux</p></li>
-          <li (click)="closeDialogIfMobile()" routerLink="/view/graphique"><p class="menu-item">Graphiques</p></li>
+          <li (click)="closeDialogIfMobile()" [routerLink]="['view', 'table']">
+            <p class="menu-item">Tableaux</p>
+          </li>
+          <li
+            (click)="closeDialogIfMobile()"
+            [routerLink]="['view', 'graphique']"
+          >
+            <p class="menu-item">Graphiques</p>
+          </li>
         </ul>
       </nav>
       <nav *ngSwitchCase="ActivityEnum.Administrator">
         <ul>
-          <li (click)="closeDialogIfMobile()" routerLink="/administration/users"><p class="menu-item">Utilisateurs</p></li>
-          <li (click)="closeDialogIfMobile()" routerLink="/administration/projects"><p class="menu-item">Projets</p></li>
-          <li (click)="closeDialogIfMobile()" routerLink="/administration/ressources"><p class="menu-item">Ressources</p></li>
+          <li
+            (click)="closeDialogIfMobile()"
+            [routerLink]="['administration', 'users']"
+          >
+            <p class="menu-item">Utilisateurs</p>
+          </li>
+          <li
+            (click)="closeDialogIfMobile()"
+            [routerLink]="['administration', 'projects']"
+          >
+            <p class="menu-item">Projets</p>
+          </li>
+          <li
+            (click)="closeDialogIfMobile()"
+            [routerLink]="['administration', 'ressources']"
+          >
+            <p class="menu-item">Ressources</p>
+          </li>
+        </ul>
+      </nav>
+      <nav *ngSwitchCase="ActivityEnum.User">
+        <ul>
+          <li
+            (click)="closeDialogIfMobile()"
+            [routerLink]="['user', getCurrentUserLogin(), 'session']"
+          >
+            <p class="menu-item">Session</p>
+          </li>
+          <li
+            (click)="closeDialogIfMobile()"
+            [routerLink]="['user', getCurrentUserLogin(), 'history']"
+          >
+            <p class="menu-item">Historique</p>
+          </li>
         </ul>
       </nav>
     </ng-container>
   </section>
 
   <section class="role-section">
-
     <ng-container [ngSwitch]="this.activityObservable | async">
       <div class="info-role" *ngSwitchCase="ActivityEnum.User">
         <img class="icon role-icon" src="/assets/icons/Precision.svg" />
-        <p >Utilisateur</p>
+        <p>Utilisateur</p>
       </div>
       <div class="info-role" *ngSwitchCase="ActivityEnum.Viewer">
         <img class="icon role-icon" src="/assets/icons/Query.svg" />
@@ -46,7 +95,11 @@
       </div>
     </ng-container>
 
-    <button id="switch-role-button" class="button-icon" (click)="toggleActivitySelection()">
+    <button
+      id="switch-role-button"
+      class="button-icon"
+      (click)="toggleActivitySelection()"
+    >
       <img
         class="icon"
         src="/assets/icons/Manage.svg"

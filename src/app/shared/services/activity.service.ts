@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, takeWhile } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ActivityDialogComponent } from '../components/activity-dialog/activity-dialog.component';
 import { user } from '../interfaces/utilisateur.interface';
+import { UserInformationService } from './user-information.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,11 @@ export class ActivityService {
 
   ref: DynamicDialogRef | undefined;
 
-  constructor(private router: Router, private dialogService: DialogService) {
+  constructor(
+    private router: Router,
+    private dialogService: DialogService,
+    private readonly userInformationService: UserInformationService
+  ) {
     this.isActivityDefined = false;
 
     this.currentActivity = ActivityEnum.Viewer;
@@ -69,7 +74,7 @@ export class ActivityService {
         if (user) {
           this.userConnected = user;
           this.router.navigate(['/user/' + user.login]);
-          console.log('/user/' + user.login);
+          this.userInformationService.setUserInformation(user);
         }
         break;
       case ActivityEnum.Viewer:
@@ -97,6 +102,6 @@ export class ActivityService {
   }
 
   public getCurrentConnectedUser(): user {
-    return this.userConnected
+    return this.userConnected;
   }
 }
