@@ -1,1 +1,17 @@
-<p>initsession works!</p>
+<section>
+  <h2>Création de la session</h2>
+  <p-listbox
+    [options]="projectsList"
+    [(ngModel)]="selectedProject"
+    optionLabel="name"
+    [filter]="true"
+    [style]="{ width: '15rem' }"
+    [listStyle]="{ 'max-height': '220px' }"
+  ></p-listbox>
+  <p-button
+    label="Démarrer une session"
+    icon="pi pi-angle-right"
+    size="large"
+    iconPos="right"
+  ></p-button>
+</section>

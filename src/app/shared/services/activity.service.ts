@@ -39,6 +39,11 @@ export class ActivityService {
             case 'user':
               this.activityObservable.next(ActivityEnum.User);
               this.currentActivity = ActivityEnum.User;
+              if (this.router.url.split('/')[2]) {
+                this.userInformationService.fetchUserInformation(
+                  this.router.url.split('/')[2]
+                );
+              }
               break;
 
             case 'administration':

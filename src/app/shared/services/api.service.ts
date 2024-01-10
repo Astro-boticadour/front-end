@@ -20,7 +20,7 @@ export class ApiService {
   // PROJECT
 
   public getAllProject(): Observable<project[]> {
-    return this._httpClient.get<ApiResult>(this.baseUrl + '/api/projet').pipe(
+    return this._httpClient.get<ApiResult>(this.baseUrl + '/projet').pipe(
       first(),
       map((data: ApiResult) => {
         if (data.status === 'success' && data.result) {
@@ -42,57 +42,53 @@ export class ApiService {
   }
 
   public getProjectById(id: number): Observable<project> {
-    return this._httpClient
-      .get<ApiResult>(this.baseUrl + '/api/projet/' + id)
-      .pipe(
-        first(),
-        map((data: ApiResult) => {
-          if (data.status === 'success' && data.result) {
-            // Data correct : mapping
-            return {
-              id: data.result.id,
-              label: data.result.nom,
-              dateStart: data.result.dateDebut,
-              dateEnd: data.result.dateFin,
-              isFinished: data.result.estClos,
-              description: data.result.description
-                ? data.result.description
-                : undefined,
-            } as project;
-          } else {
-            throw new Error(data.message ?? 'UnknownError');
-          }
-        })
-      );
+    return this._httpClient.get<ApiResult>(this.baseUrl + '/projet/' + id).pipe(
+      first(),
+      map((data: ApiResult) => {
+        if (data.status === 'success' && data.result) {
+          // Data correct : mapping
+          return {
+            id: data.result.id,
+            label: data.result.nom,
+            dateStart: data.result.dateDebut,
+            dateEnd: data.result.dateFin,
+            isFinished: data.result.estClos,
+            description: data.result.description
+              ? data.result.description
+              : undefined,
+          } as project;
+        } else {
+          throw new Error(data.message ?? 'UnknownError');
+        }
+      })
+    );
   }
 
   // USER
 
   public getAllUser(): Observable<user[]> {
-    return this._httpClient
-      .get<ApiResult>(this.baseUrl + '/api/utilisateur')
-      .pipe(
-        first(),
-        map((data: ApiResult) => {
-          if (data.status === 'success' && data.result) {
-            return data.result.map((data: any) => {
-              return {
-                login: data.login,
-                firstName: data.prenom,
-                lastName: data.nom,
-                pole: data.pole,
-              } as user;
-            });
-          } else {
-            throw new Error(data.message ?? 'UnknownError');
-          }
-        })
-      );
+    return this._httpClient.get<ApiResult>(this.baseUrl + '/utilisateur').pipe(
+      first(),
+      map((data: ApiResult) => {
+        if (data.status === 'success' && data.result) {
+          return data.result.map((data: any) => {
+            return {
+              login: data.login,
+              firstName: data.prenom,
+              lastName: data.nom,
+              pole: data.pole,
+            } as user;
+          });
+        } else {
+          throw new Error(data.message ?? 'UnknownError');
+        }
+      })
+    );
   }
 
   public getUserByLogin(login: string): Observable<user> {
     return this._httpClient
-      .get<ApiResult>(this.baseUrl + '/api/utilisateur/' + login)
+      .get<ApiResult>(this.baseUrl + '/utilisateur/' + login)
       .pipe(
         first(),
         map((data: ApiResult) => {

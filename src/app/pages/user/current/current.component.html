@@ -1,1 +1,15 @@
-<p>current works!</p>
+<section>
+  <ng-container [ngSwitch]="this.sessionsStatus">
+    <div *ngSwitchCase="SessionStatusEnum.Undefined">
+      <app-nosession
+        (createSessionEvent)="initializingSession()"
+      ></app-nosession>
+    </div>
+    <div *ngSwitchCase="SessionStatusEnum.Initializing">
+      <app-initsession></app-initsession>
+    </div>
+    <div *ngSwitchCase="SessionStatusEnum.Running || SessionStatusEnum.Paused">
+      <app-runningsession></app-runningsession>
+    </div>
+  </ng-container>
+</section>

@@ -15,6 +15,8 @@ export class CurrentComponent {
   public sessionInformation!: session;
   public sessionsStatus: SessionStatusEnum = SessionStatusEnum.Undefined;
 
+  public SessionStatusEnum = SessionStatusEnum;
+
   constructor(
     private readonly apiService: ApiService,
     private readonly userInformationService: UserInformationService
@@ -23,6 +25,7 @@ export class CurrentComponent {
     if (userLogin) {
       this.apiService.getSessionFromUser(userLogin).subscribe((data) => {
         this.sessionInformation = data;
+        this.sessionsStatus = SessionStatusEnum.Running;
       });
     }
   }
@@ -34,5 +37,9 @@ export class CurrentComponent {
 
   updateSessionForUser() {
     this.apiService.updateSessionForUser(this.sessionInformation);
+  }
+
+  initializingSession() {
+    this.sessionsStatus = SessionStatusEnum.Initializing;
   }
 }

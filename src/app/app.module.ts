@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TableModule } from 'primeng/table';
 import { AdministrationModule } from './pages/administration/administration.module';
+import { ViewerModule } from './pages/viewer/viewer.module';
+import { UserModule } from './pages/user/user.module';
 
 @NgModule({
   declarations: [AppComponent, SidebarComponent],
@@ -24,6 +26,8 @@ import { AdministrationModule } from './pages/administration/administration.modu
     HttpClientModule,
     TableModule,
     AdministrationModule,
+    ViewerModule,
+    UserModule,
   ],
   providers: [DialogService],
   bootstrap: [AppComponent],
