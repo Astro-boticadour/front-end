@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, first, map } from 'rxjs';
+import { Observable, first, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { project } from '../interfaces/projet.interface';
 import { user } from '../interfaces/utilisateur.interface';
 import { ApiResult } from '../interfaces/api-result.interface';
+import { session } from '../interfaces/session.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -108,5 +109,26 @@ export class ApiService {
           }
         })
       );
+  }
+
+  public getSessionFromUser(user: string): Observable<session> {
+    if (user === 'gtritsch') {
+      return of({
+        id: 25,
+        timestampStart: 1704874536,
+        loginUser: 'gtritsch',
+        idProject: 4,
+      });
+    } else {
+      throw new Error('UserNotFound');
+    }
+  }
+
+  public createSessionForUser(session: session): boolean {
+    return true;
+  }
+
+  public updateSessionForUser(session: session): boolean {
+    return true;
   }
 }
