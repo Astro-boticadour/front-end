@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  API_URL: 'https://astroapi.placali.fr',
+  API_URL: 'https://astro.placali.fr/api',
 };

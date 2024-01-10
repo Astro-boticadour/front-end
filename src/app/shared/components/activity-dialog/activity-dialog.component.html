@@ -58,7 +58,6 @@
       <label for="label">Nom</label>
       <input pInputText id="label" (input)="filterUser($event)" />
     </div>
-
     <ul *ngIf="filteredUserList != []; else placeholder" class="user-selection">
       <li *ngFor="let user of filteredUserList">
         <button (click)="switchTo(ActivityEnum.User, user)">
