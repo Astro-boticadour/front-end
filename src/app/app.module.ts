@@ -14,6 +14,7 @@ import { AdministrationModule } from './pages/administration/administration.modu
 import { ViewerModule } from './pages/viewer/viewer.module';
 import { UserModule } from './pages/user/user.module';
 
+
 @NgModule({
   declarations: [AppComponent, SidebarComponent],
   imports: [
