@@ -1,1 +1,32 @@
-<p>table works!</p>
+<h2>Heures Totales</h2>
+<h5>Données</h5>
+
+<p-table [value]="sessions" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-gridlines">
+  <ng-template pTemplate="header" >
+    <tr>
+      <th>Activité/Tâche</th>
+      <th *ngFor="let date of dateHeader">{{date.label}}<br>{{date.date}}</th>
+
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-v>
+    <tr>
+      <td>{{v.id}}</td>
+      <td>{{v.idProject}}</td>
+      <td>{{v.loginUser}}</td>
+      <td>{{v.mer}}</td>
+      <td>{{v.jeu}}</td>
+      <td>{{v.ven}}</td>
+      <td>{{v.sam}}</td>
+      <td>{{v.dim}}</td>
+      <td>{{v.lun2}}</td>
+      <td>{{v.mar2}}</td>
+      <td>{{v.mer2}}</td>
+      <td>{{v.jeu2}}</td>
+      <td>{{v.ven2}}</td>
+      <td>{{v.sam2}}</td>
+      <td>{{v.dim2}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+

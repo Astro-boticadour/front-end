@@ -259,4 +259,46 @@ export class ApiService {
         })
       );
   }
+
+  public getAllSessions(): Observable<session[]> {
+    return this._httpClient.get<ApiResult>(this.baseUrl + '/session').pipe(
+      first(),
+      map((data: ApiResult) => {
+        if (data.status === 'success' && data.result) {
+          return data.result.map((data: any) => {
+            return {
+              id: data.id,
+              timestampStart: data.horodatageDebut,
+              timestampEnd: data.horodatageFin,
+              loginUser: data.loginUtilisateur,
+              idProject: data.idProjet,
+            } as session;
+          });
+        } else {
+          throw new Error(data.message ?? 'UnknownError');
+        }
+      })
+    );
+  }
+
+  public getSessionById(id: string): Observable<session[]> {
+    return this._httpClient.get<ApiResult>(this.baseUrl + '/session' + id).pipe(
+      first(),
+      map((data: ApiResult) => {
+        if (data.status === 'success' && data.result) {
+          return data.result.map((data: any) => {
+            return {
+              id: data.id,
+              timestampStart: data.timestampStart,
+              timestampEnd: data.timestampEnd,
+              loginUser: data.loginUser,
+              idProject: data.idProject,
+            } as session;
+          });
+        } else {
+          throw new Error(data.message ?? 'UnknownError');
+        }
+      })
+    );
+  }
 }
