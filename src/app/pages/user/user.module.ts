@@ -8,6 +8,9 @@ import { InitsessionComponent } from './current/initsession/initsession.componen
 import { ButtonModule } from 'primeng/button';
 import { ListboxModule } from 'primeng/listbox';
 import { FormsModule } from '@angular/forms';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -17,6 +20,14 @@ import { FormsModule } from '@angular/forms';
     RunningsessionComponent,
     InitsessionComponent,
   ],
-  imports: [FormsModule, CommonModule, ButtonModule, ListboxModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    ButtonModule,
+    ListboxModule,
+    ProgressSpinnerModule,
+    ToastModule,
+  ],
+  providers: [MessageService],
 })
 export class UserModule {}

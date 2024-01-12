@@ -4,4 +4,43 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 30px;
+
+  color: #2c2c2c;
+
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    p,
+    h2 {
+      margin: 5px;
+    }
+  }
+
+  h2,
+  p {
+    text-align: center;
+  }
+
+  .icon {
+    height: 200px;
+    width: auto;
+    filter: invert(62%) sepia(59%) saturate(7143%) hue-rotate(204deg)
+      brightness(101%) contrast(93%);
+  }
+}
+
+::ng-deep .p-listbox {
+  font-size: 120% !important;
+}
+
+@media (max-width: 750px) {
+  section {
+    height: 100vh;
+    width: 100vw;
+  }
 }

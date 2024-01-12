@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, first, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -6,6 +6,8 @@ import { project } from '../interfaces/projet.interface';
 import { user } from '../interfaces/utilisateur.interface';
 import { ApiResult } from '../interfaces/api-result.interface';
 import { session } from '../interfaces/session.interface';
+import { ressource } from '../interfaces/ressource.interface';
+import { used } from '../interfaces/utilise.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +15,44 @@ import { session } from '../interfaces/session.interface';
 export class ApiService {
   public baseUrl: string;
 
+  private token!: string;
+
   constructor(private _httpClient: HttpClient) {
     this.baseUrl = environment.API_URL;
+  }
+
+  // ADMIN
+
+  public removeToken(): void {
+    this.removeToken === undefined;
+  }
+
+  public isTokenDefined(): boolean {
+    return this.token !== undefined;
+  }
+
+  public requestToken(login: string, password: string): Observable<boolean> {
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Basic ' + btoa('admin:admin'),
+    });
+
+    console.log(headers_object);
+    const httpOptions = {
+      headers: headers_object,
+    };
+    return this._httpClient
+      .post<ApiResult>(this.baseUrl + '/admin/login', {}, httpOptions)
+      .pipe(
+        first(),
+        map((data: ApiResult) => {
+          if (data.status === 'success') {
+            this.token = data.result.token;
+            return true;
+          }
+          return false;
+        })
+      );
   }
 
   // PROJECT
@@ -107,24 +145,118 @@ export class ApiService {
       );
   }
 
-  public getSessionFromUser(user: string): Observable<session> {
-    if (user === 'gtritsch') {
-      return of({
-        id: 25,
-        timestampStart: 1704874536,
-        loginUser: 'gtritsch',
-        idProject: 4,
-      });
-    } else {
-      throw new Error('UserNotFound');
-    }
+  public getAllRessources(): Observable<ressource[]> {
+    return this._httpClient.get<ApiResult>(this.baseUrl + '/ressource').pipe(
+      first(),
+      map((data: ApiResult) => {
+        if (data.status === 'success' && data.result) {
+          // Data correct : mapping
+          return data.result.map((data: any) => {
+            return {
+              id: data.id,
+              label: data.nom,
+              type: data.type,
+              modele: data.modele,
+              isUsed: data.estUtilise,
+            } as ressource;
+          });
+        } else {
+          throw new Error(data.message ?? 'UnknownError');
+        }
+      })
+    );
   }
 
-  public createSessionForUser(session: session): boolean {
-    return true;
+  public getSessionFromUser(login: string): Observable<any> {
+    return this._httpClient
+      .get<ApiResult>(this.baseUrl + '/session/activesessions/' + login)
+      .pipe(
+        first(),
+        map((data) => {
+          console.log(
+            data.result.session,
+            this.baseUrl + '/session/activesessions/' + login
+          );
+
+          if (data.status === 'success' && data.result.working) {
+            data.result.session = {
+              id: data.result.session.id,
+              timestampStart: data.result.session.horodatageDebut,
+              timestampEnd: data.result.session.horodatageFin,
+              loginUser: data.result.session.loginUtilisateur,
+              idProject: data.result.session.idProjet,
+            } as session;
+            return data;
+          } else if (data.status === 'success' && !data.result.working) {
+            return data;
+          } else {
+            throw new Error(data.message ?? 'UnknownError');
+          }
+        })
+      );
   }
 
-  public updateSessionForUser(session: session): boolean {
-    return true;
+  public createSession(session: session): Observable<any> {
+    return this._httpClient.post(this.baseUrl + '/session', {
+      id: session.id,
+      horodatageDebut: session.timestampStart,
+      horodatageFin: session.timestampEnd,
+      loginUtilisateur: session.loginUser,
+      idProjet: session.idProject,
+    });
+  }
+
+  public updateSession(session: session): Observable<any> {
+    return this._httpClient.put<any>(this.baseUrl + '/session/' + session.id, {
+      horodatageDebut: session.timestampStart,
+      horodatageFin: session.timestampEnd,
+      loginUtilisateur: session.loginUser,
+      idProjet: session.idProject,
+    });
+  }
+
+  public addRessourceToSession(
+    idRessource: number,
+    idSession: number,
+    timestampStart: number = Math.round(new Date().getTime() / 1000)
+  ): Observable<any> {
+    return this._httpClient.post(this.baseUrl + '/utilise', {
+      idRessource: idRessource,
+      idSession: idSession,
+      horodatageDebutUtilisation: timestampStart,
+    });
+  }
+
+  public removeRessourceToSession(
+    idUsage: number,
+    timestampEnd: number = Math.round(new Date().getTime() / 1000)
+  ): Observable<any> {
+    return this._httpClient.put(this.baseUrl + '/utilise/' + idUsage, {
+      horodatageFinUtilisation: timestampEnd,
+    });
+  }
+
+  public getAllUsageOfSession(id: number): Observable<used[]> {
+    return this._httpClient
+      .get<ApiResult>(this.baseUrl + '/session/usage/' + id)
+      .pipe(
+        first(),
+        map((data: ApiResult) => {
+          if (data.status === 'success' && data.result) {
+            console.log(data, this.baseUrl + '/session/usage/' + id);
+            return data.result.map((data: any) => {
+              return {
+                id: data.id,
+                idRessource: data.idRessource,
+                idSession: data.idSession,
+                timestampStart: data.horodatageDebutUtilisation,
+                timestampEnd: data.horodatageFinUtilisation,
+              } as used;
+            });
+          } else {
+            throw new Error(data.message ?? 'UnknownError');
+          }
+        })
+      );
   }
 }

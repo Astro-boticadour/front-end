@@ -3,7 +3,8 @@
   <p-listbox
     [options]="projectsList"
     [(ngModel)]="selectedProject"
-    optionLabel="name"
+    optionLabel="label"
+    optionValue="id"
     [filter]="true"
     [style]="{ width: '15rem' }"
     [listStyle]="{ 'max-height': '220px' }"
@@ -13,5 +14,7 @@
     icon="pi pi-angle-right"
     size="large"
     iconPos="right"
+    (click)="createSession()"
+    [disabled]="selectedProject === undefined"
   ></p-button>
 </section>

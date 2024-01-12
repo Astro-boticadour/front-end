@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { user } from '../interfaces/utilisateur.interface';
 import { session } from '../interfaces/session.interface';
 import { ApiService } from './api.service';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +10,14 @@ import { ApiService } from './api.service';
 export class UserInformationService {
   private userInformation!: user;
   private userSessionsHistory!: session[];
+  private userInformationObservable: BehaviorSubject<user | undefined> =
+    new BehaviorSubject<user | undefined>(undefined);
 
   constructor(private readonly ApiService: ApiService) {}
+
+  public getUserInformationObservable(): Observable<user | undefined> {
+    return this.userInformationObservable;
+  }
 
   public isUserDefined(): boolean {
     return this.userInformation !== undefined;
@@ -26,6 +33,7 @@ export class UserInformationService {
 
   public setUserInformation(user: user): void {
     this.userInformation = user;
+    this.userInformationObservable.next(user);
   }
 
   /**
@@ -38,7 +46,7 @@ export class UserInformationService {
   public fetchUserInformation(userLogin: string): void {
     this.ApiService.getUserByLogin(userLogin).subscribe({
       next: (data: user) => {
-        this.userInformation = data;
+        this.setUserInformation(data);
       },
       error: (error: Error) => {
         console.log(error);

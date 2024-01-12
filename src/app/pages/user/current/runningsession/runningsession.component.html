@@ -1,1 +1,32 @@
-<p>runningsession works!</p>
+<section>
+  <div>
+    <h2>Session en cours</h2>
+    <p>depuis {{ shownSessionTime }} {{ sessionTimeUnite }}</p>
+    <p>Vous utilisez {{ _selectedRessource.length }} ressource(s)</p>
+  </div>
+  <div>
+    <p-listbox
+      [options]="shownOptions"
+      [(ngModel)]="_selectedRessource"
+      optionLabel="label"
+      optionValue="id"
+      [filter]="true"
+      [style]="{ width: '15rem' }"
+      [listStyle]="{ 'max-height': '220px' }"
+      [multiple]="true"
+      [checkbox]="true"
+      (click)="updateRessources()"
+    ></p-listbox>
+    <p *ngIf="shownOptions.length === 0">
+      Toutes les ressources sont deja en cours d'utilisation
+    </p>
+  </div>
+  <p-button
+    label="Fermer la session"
+    icon="pi pi-times-circle"
+    size="large"
+    iconPos="right"
+    severity="danger"
+    (click)="closeSession()"
+  ></p-button>
+</section>

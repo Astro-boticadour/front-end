@@ -6,10 +6,27 @@
       ></app-nosession>
     </div>
     <div *ngSwitchCase="SessionStatusEnum.Initializing">
-      <app-initsession></app-initsession>
+      <app-initsession
+        (createSessionEvent)="createSession($event)"
+      ></app-initsession>
     </div>
     <div *ngSwitchCase="SessionStatusEnum.Running || SessionStatusEnum.Paused">
-      <app-runningsession></app-runningsession>
+      <app-runningsession
+        #runningSession
+        [ressourcesUsedIdList]="ressourcesUsed"
+        (closeSessionEvent)="closeSession()"
+        (updateSessionEvent)="updateRessource($event)"
+        [(selectedRessource)]="ressourcesUsedId"
+        [timeSession]="this.timeSession"
+      ></app-runningsession>
     </div>
   </ng-container>
 </section>
+<div *ngIf="!dataReceived" class="loader">
+  <p-progressSpinner
+    styleClass="w-4rem h-4rem"
+    strokeWidth="8"
+    animationDuration="3s"
+  ></p-progressSpinner>
+  <h2>Récupération des données</h2>
+</div>
