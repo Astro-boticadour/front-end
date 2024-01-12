@@ -34,7 +34,7 @@ export class ApiService {
   public requestToken(login: string, password: string): Observable<boolean> {
     var headers_object = new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: 'Basic ' + btoa('admin:admin'),
+      Authorization: 'Basic ' + btoa(login + ':' + password),
     });
 
     console.log(headers_object);
@@ -300,5 +300,13 @@ export class ApiService {
         }
       })
     );
+  }
+
+  public getTableData(idRessource: number, month: string): Observable<any> {
+    return this._httpClient
+      .get<ApiResult>(this.baseUrl + '/data/get_ressource_timesheet', {
+        params: { idRessource: idRessource, month: month },
+      })
+      .pipe(first());
   }
 }
