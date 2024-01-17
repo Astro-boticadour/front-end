@@ -34,6 +34,10 @@ section {
   }
 }
 
+::ng-deep .p-listbox-header .p-checkbox.p-component {
+  display: none;
+}
+
 ::ng-deep .p-listbox {
   font-size: 120% !important;
 }

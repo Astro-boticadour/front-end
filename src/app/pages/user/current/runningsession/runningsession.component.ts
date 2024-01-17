@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Observable, interval } from 'rxjs';
 import { ressource } from 'src/app/shared/interfaces/ressource.interface';
 import { ApiService } from 'src/app/shared/services/api.service';
 
@@ -18,7 +19,10 @@ export class RunningsessionComponent {
 
   public shownSessionTime!: number;
 
+  private literalTimestamp!: number;
+
   @Input() set timeSession(value: number) {
+    this.literalTimestamp = value;
     if (value < 3600) {
       this.shownSessionTime = Math.round(value / 60);
       this.sessionTimeUnite = 'minute(s)';
@@ -45,6 +49,21 @@ export class RunningsessionComponent {
     this.apiService.getAllRessources().subscribe((data) => {
       this.ressourcesList = data;
       this.calculateShownOption();
+    });
+
+    interval(5000).subscribe((data: any) => {
+      if (this.literalTimestamp) {
+        this.literalTimestamp += 5;
+        console.log(this.literalTimestamp);
+
+        if (this.literalTimestamp < 3600) {
+          this.shownSessionTime = Math.round(this.literalTimestamp / 60);
+          this.sessionTimeUnite = 'minute(s)';
+        } else {
+          this.shownSessionTime = Math.round(this.literalTimestamp / 3600);
+          this.sessionTimeUnite = 'heure(s)';
+        }
+      }
     });
   }
 
