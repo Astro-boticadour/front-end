@@ -79,6 +79,8 @@ export class RunningsessionComponent {
     this.shownOptions.forEach((data: ressource) => {
       if (data.isUsed === 1 && !this._selectedRessource.includes(data.id)) {
         data.disabled = true;
+      } else {
+        data.disabled = false;
       }
     });
     /* this.shownOptions = this.ressourcesList.filter(
