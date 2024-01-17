@@ -56,6 +56,23 @@ export class TableComponent {
           if (data.status === 'success') {
             if (data.result.length > 0) {
               this.sessions = data.result;
+              for (let indexA = 0; indexA < this.sessions.length; indexA++) {
+                for (
+                  let indexB = 0;
+                  indexB < this.sessions[indexA].workingDays.length;
+                  indexB++
+                ) {
+                  if (this.sessions[indexA].workingDays[indexB] !== '') {
+                    this.sessions[indexA].workingDays[indexB] =
+                      Math.round(
+                        this.sessions[indexA].workingDays[indexB] * 100
+                      ) / 100;
+                    if (this.sessions[indexA].workingDays[indexB] < 0.05) {
+                      this.sessions[indexA].workingDays[indexB] = '';
+                    }
+                  }
+                }
+              }
               this.error = '';
             } else {
               this.error = 'Aucune donnée';

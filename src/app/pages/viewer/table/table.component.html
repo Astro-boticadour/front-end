@@ -45,7 +45,7 @@
       <ng-template pTemplate="body" let-v>
         <tr>
           <td>{{ v.projectName }}</td>
-          <td *ngFor="let r of v.workingDays">{{ r | number : "1.0-2" }}</td>
+          <td *ngFor="let r of v.workingDays">{{ r }}</td>
         </tr>
       </ng-template>
     </p-table>
