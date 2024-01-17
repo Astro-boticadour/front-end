@@ -1,1 +1,72 @@
-<p>ressources works!</p>
+<p-card header="Ajout d'un projet">
+  <section>
+    <section id="projects-form">
+      <div class="input-field">
+        <label for="label">Nom</label>
+        <input pInputText id="label" [(ngModel)]="label" />
+      </div>
+      <div class="input-field">
+        <label for="dateStart">Type</label>
+        <p-dropdown
+          id="dateStart"
+          [options]="typeRobot"
+          [(ngModel)]="type"
+        ></p-dropdown>
+      </div>
+      <div class="input-field">
+        <label for="dateEnd">Modele</label>
+        <input pInputText id="dateEnd" [(ngModel)]="modele" />
+      </div>
+    </section>
+    <section id="action-section">
+      <p-button label="Créer" (click)="create()"></p-button>
+    </section>
+  </section>
+</p-card>
+<p-card header="Consultation des projets">
+  <section *ngIf="tableData !== undefined; else placeholder">
+    <p-table
+      #dt
+      [value]="tableData"
+      [paginator]="true"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [rows]="10"
+      [showCurrentPageReport]="true"
+      [globalFilterFields]="['label', 'description']"
+      currentPageReportTemplate="{last} sur les {totalRecords} projets"
+    >
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+          Liste des projets
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              [(ngModel)]="inputValue"
+              (input)="dt.filterGlobal(inputValue, 'contains')"
+              placeholder="Rechercher..."
+            />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nom</th>
+          <th>Type</th>
+          <th>Modele</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-ressource>
+        <tr>
+          <td>{{ ressource.label }}</td>
+          <td>{{ ressource.type }}</td>
+          <td>{{ ressource.modele }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+  <ng-template #placeholder>
+    <p-progressSpinner></p-progressSpinner>
+  </ng-template>
+</p-card>
