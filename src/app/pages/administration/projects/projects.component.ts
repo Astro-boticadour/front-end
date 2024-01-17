@@ -6,7 +6,7 @@ import { takeWhile } from 'rxjs';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
-  styleUrl: './projects.component.scss'
+  styleUrl: './projects.component.scss',
 })
 export class ProjectsComponent {
   tableData!: project[];
@@ -19,21 +19,36 @@ export class ProjectsComponent {
   description!: string;
 
   constructor(private apiService: ApiService) {
-    this.getTableData()
+    this.getTableData();
   }
 
   public getTableData(): void {
-    this.apiService.getAllProject().pipe(takeWhile(() => this.tableData === undefined)).subscribe((data) => {this.tableData = data})
+    this.apiService.getAllProject().subscribe((data) => {
+      this.tableData = data;
+    });
   }
 
   public create() {
-    if (!(this.label && this.dateStart && this.dateEnd && this.description))
-    {
-      alert("veuillez remplir tous les champs avant de créer un projet");
+    if (!(this.label && this.dateStart && this.dateEnd && this.description)) {
+      alert('veuillez remplir tous les champs avant de créer un projet');
       return 0;
-    } 
-      this.apiService.createProject({label:this.label, dateStart:this.dateStart, dateEnd:this.dateEnd, isFinished:this.isFinished, description:this.description})
-      .subscribe((data) => {alert("projet créé");});
-      return 1
+    }
+    this.apiService
+      .createProject({
+        label: this.label,
+        dateStart: this.dateStart,
+        dateEnd: this.dateEnd,
+        isFinished: this.isFinished,
+        description: this.description,
+      })
+      .subscribe((data) => {
+        this.getTableData();
+        if (data.status === 'success') {
+          alert('projet créé');
+        } else {
+          alert('erreur');
+        }
+      });
+    return 1;
   }
 }

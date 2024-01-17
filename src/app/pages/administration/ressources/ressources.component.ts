@@ -25,12 +25,9 @@ export class RessourcesComponent {
   }
 
   public getTableData(): void {
-    this.apiService
-      .getAllRessources()
-      .pipe()
-      .subscribe((data) => {
-        this.tableData = data;
-      });
+    this.apiService.getAllRessources().subscribe((data) => {
+      this.tableData = data;
+    });
   }
 
   public create() {
@@ -47,7 +44,7 @@ export class RessourcesComponent {
       .subscribe((data) => {
         this.getTableData();
         if (data.status === 'success') {
-          alert('projet créé');
+          alert('ressource créé');
         } else {
           alert('erreur');
         }
