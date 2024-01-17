@@ -43,6 +43,12 @@ export class CurrentComponent implements OnInit {
     interval(2000).subscribe(() => {
       this.getAllData();
     });
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Service Message',
+      detail: 'Via MessageService',
+    });
   }
 
   getAllData() {
@@ -145,21 +151,33 @@ export class CurrentComponent implements OnInit {
       if (this.sessionInformation.id) {
         if (!Object.keys(this.ressourcesUsed).includes(x.toString())) {
           changeNumber += 1;
-          this.apiService
-            .addRessourceToSession(x, this.sessionInformation.id)
-            .subscribe((result) => {
-              if ((result.status = 'success')) {
-                this.ressourcesUsed[x] = result.result;
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Utilisation enregistré',
-                });
-                changeNumber -= 1;
-              }
-              if (changeNumber === 0) {
-                this.isDataLoading = false;
-              }
+          try {
+            this.apiService
+              .addRessourceToSession(x, this.sessionInformation.id)
+              .subscribe((result) => {
+                if ((result.status = 'success')) {
+                  this.ressourcesUsed[x] = result.result;
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Ressource ajouté',
+                  });
+                  changeNumber -= 1;
+                } else {
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: "Echec lors de l'ajout de la ressource",
+                  });
+                }
+                if (changeNumber === 0) {
+                  this.isDataLoading = false;
+                }
+              });
+          } catch (e) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Echec lors du retrait de la ressource',
             });
+          }
         }
       }
     });
@@ -168,18 +186,33 @@ export class CurrentComponent implements OnInit {
       if (this.sessionInformation.id) {
         if (!ressources.includes(Number(x))) {
           changeNumber += 1;
-
-          this.apiService
-            .removeRessourceToSession(this.ressourcesUsed[x].id)
-            .subscribe((result) => {
-              if ((result.status = 'success')) {
-                delete this.ressourcesUsed[x];
-                changeNumber -= 1;
-              }
-              if (changeNumber === 0) {
-                this.isDataLoading = false;
-              }
+          try {
+            this.apiService
+              .removeRessourceToSession(this.ressourcesUsed[x].id)
+              .subscribe((result) => {
+                if ((result.status = 'success')) {
+                  delete this.ressourcesUsed[x];
+                  changeNumber -= 1;
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Ressource retiré',
+                  });
+                } else {
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Echec lors du retrait de la ressource',
+                  });
+                }
+                if (changeNumber === 0) {
+                  this.isDataLoading = false;
+                }
+              });
+          } catch (e) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Echec lors du retrait de la ressource',
             });
+          }
         }
       }
     });
