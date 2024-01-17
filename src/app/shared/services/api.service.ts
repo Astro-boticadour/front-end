@@ -37,7 +37,6 @@ export class ApiService {
       Authorization: 'Basic ' + btoa(login + ':' + password),
     });
 
-    console.log(headers_object);
     const httpOptions = {
       headers: headers_object,
     };
@@ -173,11 +172,6 @@ export class ApiService {
       .pipe(
         first(),
         map((data) => {
-          console.log(
-            data.result.session,
-            this.baseUrl + '/session/activesessions/' + login
-          );
-
           if (data.status === 'success' && data.result.working) {
             data.result.session = {
               id: data.result.session.id,
@@ -243,7 +237,6 @@ export class ApiService {
         first(),
         map((data: ApiResult) => {
           if (data.status === 'success' && data.result) {
-            console.log(data, this.baseUrl + '/session/usage/' + id);
             return data.result.map((data: any) => {
               return {
                 id: data.id,

@@ -52,7 +52,6 @@ export class TableComponent {
         .getTableData(this.ressourceNumber, this.date)
         .subscribe((data) => {
           this.loading = false;
-          console.log(data);
           if (data.status === 'success') {
             if (data.result.length > 0) {
               this.sessions = data.result;
