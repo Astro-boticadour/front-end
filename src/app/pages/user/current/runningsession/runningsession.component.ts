@@ -32,6 +32,8 @@ export class RunningsessionComponent {
     }
   }
 
+  @Input() isDataLoading: boolean = false;
+
   @Input() set selectedRessource(value: number[]) {
     this._selectedRessource = value;
 
@@ -46,9 +48,11 @@ export class RunningsessionComponent {
   @Output() updateSessionEvent = new EventEmitter<number[]>();
 
   constructor(private readonly apiService: ApiService) {
-    this.apiService.getAllRessources().subscribe((data) => {
-      this.ressourcesList = data;
-      this.calculateShownOption();
+    interval(2000).subscribe(() => {
+      this.apiService.getAllRessources().subscribe((data) => {
+        this.ressourcesList = data;
+        this.calculateShownOption();
+      });
     });
 
     interval(5000).subscribe((data: any) => {

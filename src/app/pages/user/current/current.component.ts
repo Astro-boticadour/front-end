@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { last } from 'rxjs';
+import { interval, last } from 'rxjs';
 import { SessionStatusEnum } from 'src/app/shared/enums/session-status.model';
 import { ressource } from 'src/app/shared/interfaces/ressource.interface';
 import { session } from 'src/app/shared/interfaces/session.interface';
@@ -28,6 +28,8 @@ export class CurrentComponent implements OnInit {
 
   public ressourcesUsedId: number[] = [];
 
+  public isDataLoading: boolean = false;
+
   @ViewChild('runningSession') runningSessionElement!: RunningsessionComponent;
 
   constructor(
@@ -37,6 +39,13 @@ export class CurrentComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getAllData();
+    interval(2000).subscribe(() => {
+      this.getAllData();
+    });
+  }
+
+  getAllData() {
     this.userInformationService
       .getUserInformationObservable()
       .subscribe((data) => {
@@ -53,6 +62,7 @@ export class CurrentComponent implements OnInit {
                   .getAllUsageOfSession(this.sessionInformation.id)
                   .subscribe((x) => {
                     this.ressourcesUsedId = [];
+
                     x.forEach((data) => {
                       this.ressourcesUsed[data.idRessource] = data;
                       this.ressourcesUsedId.push(data.idRessource);
@@ -129,9 +139,12 @@ export class CurrentComponent implements OnInit {
   }
 
   updateRessource(ressources: number[]) {
+    this.isDataLoading = true;
+    let changeNumber = 0;
     ressources.forEach((x) => {
       if (this.sessionInformation.id) {
         if (!Object.keys(this.ressourcesUsed).includes(x.toString())) {
+          changeNumber += 1;
           this.apiService
             .addRessourceToSession(x, this.sessionInformation.id)
             .subscribe((result) => {
@@ -141,6 +154,10 @@ export class CurrentComponent implements OnInit {
                   severity: 'success',
                   summary: 'Utilisation enregistré',
                 });
+                changeNumber -= 1;
+              }
+              if (changeNumber === 0) {
+                this.isDataLoading = false;
               }
             });
         }
@@ -150,11 +167,17 @@ export class CurrentComponent implements OnInit {
     Object.keys(this.ressourcesUsed).forEach((x: string) => {
       if (this.sessionInformation.id) {
         if (!ressources.includes(Number(x))) {
+          changeNumber += 1;
+
           this.apiService
             .removeRessourceToSession(this.ressourcesUsed[x].id)
             .subscribe((result) => {
               if ((result.status = 'success')) {
                 delete this.ressourcesUsed[x];
+                changeNumber -= 1;
+              }
+              if (changeNumber === 0) {
+                this.isDataLoading = false;
               }
             });
         }
