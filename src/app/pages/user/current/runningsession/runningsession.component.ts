@@ -76,8 +76,20 @@ export class RunningsessionComponent {
   }
 
   calculateShownOption() {
-    this.shownOptions = this.ressourcesList.filter(
-      (data) => data.isUsed === 0 || this._selectedRessource.includes(data.id)
-    );
+    this.ressourcesList.forEach((data: ressource) => {
+      console.log(
+        this._selectedRessource,
+        data.isUsed,
+        this._selectedRessource.includes(data.id)
+      );
+      if (data.isUsed === 1 && !this._selectedRessource.includes(data.id)) {
+        data.disabled = true;
+      }
+    });
+    this.shownOptions = this.ressourcesList.filter((data) => true);
+
+    /* this.shownOptions = this.ressourcesList.filter(
+      (data) => data.isUsed === 0 ||
+    );*/
   }
 }

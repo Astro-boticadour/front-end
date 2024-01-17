@@ -10,13 +10,15 @@
       [(ngModel)]="_selectedRessource"
       optionLabel="label"
       optionValue="id"
+      optionDisabled="disabled"
       [filter]="true"
       [style]="{ width: '15rem' }"
       [listStyle]="{ 'max-height': '220px' }"
       [multiple]="true"
       [checkbox]="true"
       (click)="updateRessources()"
-    ></p-listbox>
+    >
+    </p-listbox>
     <p *ngIf="shownOptions.length === 0">
       Toutes les ressources sont deja en cours d'utilisation
     </p>

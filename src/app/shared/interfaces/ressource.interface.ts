@@ -4,4 +4,5 @@ export interface ressource {
   type: string;
   modele: string;
   isUsed: number;
+  disabled?: boolean;
 }
