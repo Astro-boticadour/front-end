@@ -1,5 +1,5 @@
 export interface ressource {
-  id: number;
+  id?: number;
   label: string;
   type: string;
   modele: string;

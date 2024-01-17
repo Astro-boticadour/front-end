@@ -81,10 +81,12 @@ export class RunningsessionComponent {
   calculateShownOption() {
     this.shownOptions = this.ressourcesList;
     this.shownOptions.forEach((data: ressource) => {
-      if (data.isUsed === 1 && !this._selectedRessource.includes(data.id)) {
-        data.disabled = true;
-      } else {
-        data.disabled = false;
+      if (data.id) {
+        if (data.isUsed === 1 && !this._selectedRessource.includes(data.id)) {
+          data.disabled = true;
+        } else {
+          data.disabled = false;
+        }
       }
     });
     /* this.shownOptions = this.ressourcesList.filter(
