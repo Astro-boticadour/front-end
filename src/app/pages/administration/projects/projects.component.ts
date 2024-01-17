@@ -27,8 +27,13 @@ export class ProjectsComponent {
   }
 
   public create() {
-    if (this.label, this.dateStart, this.dateEnd, this.isFinished) {
-
-    }
+    if (!(this.label && this.dateStart && this.dateEnd && this.description))
+    {
+      alert("veuillez remplir tous les champs avant de créer un projet");
+      return 0;
+    } 
+      this.apiService.createProject({label:this.label, dateStart:this.dateStart, dateEnd:this.dateEnd, isFinished:this.isFinished, description:this.description})
+      .subscribe((data) => {alert("projet créé");});
+      return 1
   }
 }

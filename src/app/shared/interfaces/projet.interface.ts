@@ -1,5 +1,5 @@
 export interface project {
-  id: number,
+  id?: number,
   label: string,
   dateStart: Date,
   dateEnd: Date,

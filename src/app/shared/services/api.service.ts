@@ -302,4 +302,24 @@ export class ApiService {
       })
       .pipe(first());
   }
+
+  public createProject(projet:project): Observable<any> {
+
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token,
+    });
+
+    console.log(headers_object);
+    const httpOptions = {
+      headers: headers_object,
+    };
+    return this._httpClient.post(this.baseUrl + '/projet', {
+      nom: projet.label,
+      dateDebut: projet.dateStart,
+      dateFin: projet.dateEnd,
+      estClos: projet.isFinished,
+      description: projet.description,
+    }, httpOptions);
+  }
 }

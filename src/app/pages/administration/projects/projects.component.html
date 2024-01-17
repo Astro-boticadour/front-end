@@ -8,14 +8,16 @@
       <div>
         <label for="dateStart">Date de début</label>
         <p-calendar
-          pInputText
           id="dateStart"
           [(ngModel)]="dateStart"
         ></p-calendar>
       </div>
       <div>
         <label for="dateEnd">Date de fin</label>
-        <p-calendar pInputText id="dateEnd" [(ngModel)]="dateEnd"></p-calendar>
+        <p-calendar 
+        id="dateEnd" 
+        [(ngModel)]="dateEnd"
+        ></p-calendar>
       </div>
       <div>
         <p-checkbox
@@ -24,10 +26,12 @@
           [(ngModel)]="isFinished"
         ></p-checkbox>
         <label for="isFinished">Est clos</label>
-      </div>
-      <div class="input-field">
+      </div>      
+    </section>
+    <section id="description-section">
+    <div class="input-field">
         <label for="description">Description</label>
-        <input pInputText id="description" [(ngModel)]="description" />
+        <input pInputTextarea id="description" [(ngModel)]="description" />
       </div>
     </section>
     <section id="action-section">
