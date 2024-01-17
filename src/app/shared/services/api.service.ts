@@ -322,4 +322,23 @@ export class ApiService {
       description: projet.description,
     }, httpOptions);
   }
+
+  // USER
+  public createUser(utilisateur:user): Observable<any> {
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token,
+    });
+
+    console.log(headers_object);
+    const httpOptions = {
+      headers: headers_object,
+    };
+    return this._httpClient.post(this.baseUrl + '/utilisateur', {
+      login: utilisateur.login,
+      prenom: utilisateur.firstName,
+      nom: utilisateur.lastName,
+      pole: utilisateur.pole,
+    }, httpOptions);
+  }
 }

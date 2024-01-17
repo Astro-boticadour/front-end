@@ -33,7 +33,7 @@ export class ProjectsComponent {
       return 0;
     } 
       this.apiService.createProject({label:this.label, dateStart:this.dateStart, dateEnd:this.dateEnd, isFinished:this.isFinished, description:this.description})
-      .subscribe((data) => {alert("projet créé");});
+      .subscribe((data) => {alert("Projet créé");});
       return 1
   }
 }

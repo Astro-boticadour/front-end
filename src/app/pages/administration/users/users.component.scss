@@ -1,0 +1,45 @@
+.icon {
+    width: 27px;
+    height: auto;
+    filter: invert(30%) sepia(6%) saturate(925%) hue-rotate(169deg) brightness(91%) contrast(84%);
+  }
+  
+  p {
+    color: rgb(53, 53, 53)
+  }
+  
+  .expanded-table {
+    width: 100%;
+  }
+  
+  
+  :host {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  p-card {
+    width: 100%
+  }
+  
+  #projects-form {
+    display: flex;
+    flex: row;
+  }
+  
+  #description
+  {
+    height: 100px;
+  }
+  
+  .input-field {
+    display:flex;
+    flex-direction: column;
+    margin : 5px;
+    gap : 5px;
+  }
+  
+  input {
+    width: 100%;
+    
+  }
