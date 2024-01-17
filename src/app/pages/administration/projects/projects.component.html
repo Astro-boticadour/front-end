@@ -5,27 +5,28 @@
         <label for="label">Nom</label>
         <input pInputText id="label" [(ngModel)]="label" />
       </div>
-      <div>
+      <div class="input-field"> 
         <label for="dateStart">Date de début</label>
         <p-calendar
           id="dateStart"
           [(ngModel)]="dateStart"
         ></p-calendar>
       </div>
-      <div>
+      <div class="input-field">
         <label for="dateEnd">Date de fin</label>
         <p-calendar 
         id="dateEnd" 
         [(ngModel)]="dateEnd"
         ></p-calendar>
       </div>
-      <div>
+      <div class="input-field">
+        <label for="isFinished">Projet cloturé</label>
         <p-checkbox
           [binary]="true"
           inputId="isFinished"
           [(ngModel)]="isFinished"
         ></p-checkbox>
-        <label for="isFinished">Est clos</label>
+        
       </div>      
     </section>
     <section id="description-section">
