@@ -52,6 +52,7 @@ export class CurrentComponent implements OnInit {
                 this.apiService
                   .getAllUsageOfSession(this.sessionInformation.id)
                   .subscribe((x) => {
+                    this.ressourcesUsedId = [];
                     x.forEach((data) => {
                       this.ressourcesUsed[data.idRessource] = data;
                       this.ressourcesUsedId.push(data.idRessource);

@@ -54,7 +54,6 @@ export class RunningsessionComponent {
     interval(5000).subscribe((data: any) => {
       if (this.literalTimestamp) {
         this.literalTimestamp += 5;
-        console.log(this.literalTimestamp);
 
         if (this.literalTimestamp < 3600) {
           this.shownSessionTime = Math.round(this.literalTimestamp / 60);
@@ -76,18 +75,12 @@ export class RunningsessionComponent {
   }
 
   calculateShownOption() {
-    this.ressourcesList.forEach((data: ressource) => {
-      console.log(
-        this._selectedRessource,
-        data.isUsed,
-        this._selectedRessource.includes(data.id)
-      );
+    this.shownOptions = this.ressourcesList;
+    this.shownOptions.forEach((data: ressource) => {
       if (data.isUsed === 1 && !this._selectedRessource.includes(data.id)) {
         data.disabled = true;
       }
     });
-    this.shownOptions = this.ressourcesList.filter((data) => true);
-
     /* this.shownOptions = this.ressourcesList.filter(
       (data) => data.isUsed === 0 ||
     );*/
