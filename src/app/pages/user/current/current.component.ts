@@ -36,7 +36,9 @@ export class CurrentComponent implements OnInit {
     private readonly apiService: ApiService,
     private readonly userInformationService: UserInformationService,
     private readonly messageService: MessageService
-  ) {}
+  ) {
+    this.sessionsStatus = SessionStatusEnum.Undefined;
+  }
 
   ngOnInit() {
     this.getAllData();
@@ -81,7 +83,6 @@ export class CurrentComponent implements OnInit {
                   });
               }
             } else {
-              this.sessionsStatus = SessionStatusEnum.Undefined;
               this.dataReceived = true;
             }
           });
@@ -137,8 +138,24 @@ export class CurrentComponent implements OnInit {
       });
 
       this.apiService.updateSession(this.sessionInformation).subscribe((x) => {
-        if (x.status === 'success') {
-          this.sessionsStatus = SessionStatusEnum.Undefined;
+        try {
+          if (x.status === 'success') {
+            this.sessionsStatus = SessionStatusEnum.Undefined;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Fermeture de session réussi',
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Fermeture de session échoué',
+            });
+          }
+        } catch (e) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Fermeture de session échoué',
+          });
         }
       });
     }
@@ -216,5 +233,8 @@ export class CurrentComponent implements OnInit {
         }
       }
     });
+    if (changeNumber === 0) {
+      this.isDataLoading = false;
+    }
   }
 }
