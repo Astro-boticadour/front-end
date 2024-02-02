@@ -30,12 +30,12 @@
           <li (click)="closeDialogIfMobile()" [routerLink]="['view', 'table']">
             <p class="menu-item">Tableaux</p>
           </li>
-          <li
+          <!--<li
             (click)="closeDialogIfMobile()"
             [routerLink]="['view', 'graphique']"
           >
             <p class="menu-item">Graphiques</p>
-          </li>
+          </li>-->
         </ul>
       </nav>
       <nav *ngSwitchCase="ActivityEnum.Administrator">
@@ -68,12 +68,12 @@
           >
             <p class="menu-item">Session</p>
           </li>
-          <li
+          <!--<li
             (click)="closeDialogIfMobile()"
             [routerLink]="['user', getCurrentUserLogin(), 'history']"
           >
             <p class="menu-item">Historique</p>
-          </li>
+          </li>-->
         </ul>
       </nav>
     </ng-container>
