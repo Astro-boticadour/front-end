@@ -1,0 +1,73 @@
+<section class="user-section">
+  <p style="font-size: xx-large"><b>Utilisateurs</b></p>
+
+  <div class="input-field">
+    <label for="label">Nom</label>
+    <input pInputText id="label" (input)="filterUser($event)" />
+  </div>
+  <ul *ngIf="filteredUserList != []; else placeholder" class="user-selection">
+    <li *ngFor="let user of filteredUserList">
+      <button (click)="switchTo(ActivityEnum.User, user)">
+        <p>
+          <b>{{ user.login }}</b> {{ user.firstName }} {{ user.lastName }}
+        </p>
+      </button>
+    </li>
+  </ul>
+  <ng-template #placeholder>
+    <p-progressSpinner></p-progressSpinner>
+  </ng-template>
+</section>
+<section class="activity-section">
+  <p style="font-size: xx-large"><b>Administration</b></p>
+  <ul class="activity-selection">
+    <li>
+      <p-button
+        *ngIf="!isConnectingAsAdmin"
+        (click)="switchTo(ActivityEnum.Viewer)"
+        label="Visualiser les données"
+        icon="pi pi-chart-bar"
+        size="large"
+      >
+      </p-button>
+    </li>
+    <li>
+      <p-button
+        *ngIf="!isConnectingAsAdmin"
+        label="Se connecter en administrateur"
+        icon="pi pi-wrench"
+        size="large"
+        (click)="toggleAdminLogin()"
+      >
+      </p-button>
+
+      <section *ngIf="isConnectingAsAdmin">
+        <section id="login-section">
+          <p style="font-size: larger"><b>Se connecter en administrateur</b></p>
+          <div class="input-field">
+            <label for="username">Nom d'utilisateur</label>
+            <input pInputText id="username" [(ngModel)]="username" />
+          </div>
+          <div class="input-field">
+            <label for="username">Mot de passe</label>
+            <p-password
+              [(ngModel)]="password"
+              [toggleMask]="true"
+              [feedback]="false"
+            ></p-password>
+          </div>
+        </section>
+        <section id="action-section">
+          <p-button label="Se connecter" (click)="connect()"></p-button>
+          <p-button
+            [text]="true"
+            (click)="toggleAdminLogin()"
+            [outlined]="true"
+            severity="secondary"
+            label="Retour"
+          ></p-button>
+        </section>
+      </section>
+    </li>
+  </ul>
+</section>

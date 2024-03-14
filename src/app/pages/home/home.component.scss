@@ -1,0 +1,98 @@
+:host {
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  > * {
+    padding: 20px;
+  }
+}
+.activity-section {
+  width: 40rem !important;
+  border-left: 2px #f0f0f0 solid;
+  padding-top: 20px;
+}
+.user-section {
+  width: 100%;
+}
+
+.user-section .input-field {
+  input {
+    max-width: 400px;
+  }
+}
+::ng-deep .p-password,
+::ng-deep .p-password input {
+  width: 100%;
+}
+#login-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 20px;
+  width: 100%;
+}
+
+::ng-deep .activity-selection {
+  p-button button {
+    width: 100%;
+    span {
+      white-space: nowrap;
+    }
+  }
+
+  li {
+    list-style: none;
+    padding-bottom: 30px;
+  }
+}
+.user-selection {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 20px;
+  li {
+    list-style: none;
+
+    min-width: 20rem;
+
+    button {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      border: none;
+      background-color: #80808015;
+      border-radius: 4px;
+      align-items: center;
+      padding: 5px 20px;
+      img {
+        filter: invert(22%) sepia(2%) saturate(0%) hue-rotate(326deg)
+          brightness(99%) contrast(87%);
+      }
+
+      &:hover:not(:disabled) {
+        background-color: #80808032;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+@media (max-width: 750px) {
+  .activity-selection li button,
+  .user-selection li button {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .activity-section {
+    display: none;
+  }
+
+  .input-field {
+    input {
+      max-width: none;
+    }
+  }
+}

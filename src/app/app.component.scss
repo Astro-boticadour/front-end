@@ -2,10 +2,7 @@
   width: 100%;
 }
 
-@media (max-width: 750px) {
-  .main-content {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-  }
+.page {
+  display: flex;
+  flex-direction: column;
 }

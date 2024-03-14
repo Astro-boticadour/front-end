@@ -1,0 +1,21 @@
+:host {
+  width: 100vw;
+  height: fit-content;
+  background-color: #1e1e1e;
+
+  section {
+    display: inline-flex;
+    flex-direction: row;
+    gap: 10px;
+    color: rgb(206, 206, 206);
+  }
+}
+
+.app-title {
+  padding: 20px;
+
+  img {
+    width: 55px;
+    height: auto;
+  }
+}

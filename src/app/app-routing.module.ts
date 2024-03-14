@@ -8,9 +8,14 @@ import { GraphComponent } from './pages/viewer/graph/graph.component';
 import { TableComponent } from './pages/viewer/table/table.component';
 import { CurrentComponent } from './pages/user/current/current.component';
 import { HistoryComponent } from './pages/user/history/history.component';
+import { HomeComponent } from './pages/home/home.component';
 // import { LoginComponent } from './login/login.component'; // Importe ton composant de login
 
 const routes: Routes = [
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
   {
     path: 'administration',
     canActivate: [administrationGuard],
@@ -37,7 +42,7 @@ const routes: Routes = [
       { path: '**', redirectTo: 'session' },
     ],
   },
-  { path: '**', redirectTo: 'view' },
+  { path: '**', redirectTo: 'home' },
 ];
 
 @NgModule({
