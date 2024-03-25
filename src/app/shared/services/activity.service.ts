@@ -30,16 +30,21 @@ export class ActivityService {
     this.activityObservable = new BehaviorSubject<ActivityEnum>(
       ActivityEnum.Viewer
     );
+    console.log('fdddrefff');
 
     this.router.events
       .pipe(takeWhile(() => !this.isActivityDefined))
       .subscribe(() => {
+        console.log('frefff');
+
         if (this.router.url.split('/')[1]) {
           switch (this.router.url.split('/')[1]) {
             case 'user':
               this.activityObservable.next(ActivityEnum.User);
               this.currentActivity = ActivityEnum.User;
               if (this.router.url.split('/')[2]) {
+                console.log('rrrrrre');
+
                 this.userInformationService.fetchUserInformation(
                   this.router.url.split('/')[2]
                 );

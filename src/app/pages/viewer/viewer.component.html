@@ -1,1 +1,66 @@
-<p>viewer works!</p>
+<h2>Heures Totales</h2>
+<section class="input-section">
+  <div class="input-field">
+    <label for="dateInput">Mois et année</label>
+    <p-inputMask
+      id="dateInput"
+      mask="99-9999"
+      [(ngModel)]="date"
+      placeholder="99-9999"
+    ></p-inputMask>
+    <div style="color: red">
+      {{ error }}
+    </div>
+  </div>
+
+  <div class="card flex justify-content-center">
+    <div class="input-field">
+      <label for="dateInput">First</label>
+      <p-dropdown
+        [options]="firstDropdownTypeOption"
+        optionLabel="label"
+        optionValue="type"
+        [(ngModel)]="firstDropdownTypeSelection"
+        [filter]="true"
+        (onChange)="onFirstTypeChange()"
+      >
+      </p-dropdown>
+      <p-dropdown
+        *ngIf="secondDropdownTypeOption"
+        [options]="firstDropdownElementOption"
+        [optionLabel]="labelName"
+        [optionValue]="labelName"
+        [(ngModel)]="firstDropdownElementSelection"
+        [filter]="true"
+      >
+      </p-dropdown>
+    </div>
+
+    <div
+      *ngIf="firstDropdownTypeSelection && firstDropdownElementSelection"
+      class="input-field"
+    >
+      <label for="dateInput">Second</label>
+      <p-dropdown
+        [options]="secondDropdownTypeOption"
+        optionLabel="label"
+        optionValue="type"
+        [(ngModel)]="secondDropdownTypeSelection"
+        [filter]="true"
+      >
+      </p-dropdown>
+    </div>
+  </div>
+  <div>
+    <p-button (click)="getDataTable()" label="Générer"></p-button>
+  </div>
+</section>
+
+<p-tabView>
+  <p-tabPanel header="Tableau">
+    <app-table></app-table>
+  </p-tabPanel>
+  <p-tabPanel header="Graphique">
+    <app-graph></app-graph>
+  </p-tabPanel>
+</p-tabView>

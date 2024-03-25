@@ -12,8 +12,16 @@ import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DropdownModule } from 'primeng/dropdown';
+import { TabViewModule } from 'primeng/tabview';
+import { AdministrationComponent } from './administration.component';
+
 @NgModule({
-  declarations: [ProjectsComponent, UsersComponent, RessourcesComponent],
+  declarations: [
+    ProjectsComponent,
+    UsersComponent,
+    RessourcesComponent,
+    AdministrationComponent,
+  ],
   imports: [
     CommonModule,
     TableModule,
@@ -26,6 +34,7 @@ import { DropdownModule } from 'primeng/dropdown';
     CheckboxModule,
     ProgressSpinnerModule,
     DropdownModule,
+    TabViewModule,
   ],
 })
 export class AdministrationModule {}

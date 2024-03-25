@@ -41,7 +41,7 @@ export class ApiService {
       headers: headers_object,
     };
     return this._httpClient
-      .post<ApiResult>(this.baseUrl + '/admin/login', {}, httpOptions)
+      .post<ApiResult>(this.baseUrl + '/login', {}, httpOptions)
       .pipe(
         first(),
         map((data: ApiResult) => {
@@ -57,17 +57,17 @@ export class ApiService {
   // PROJECT
 
   public getAllProject(): Observable<project[]> {
-    return this._httpClient.get<ApiResult>(this.baseUrl + '/projet').pipe(
+    return this._httpClient.get<ApiResult>(this.baseUrl + '/projects').pipe(
       first(),
       map((data: ApiResult) => {
         if (data.status === 'success' && data.result) {
           return data.result.map((data: any) => {
             return {
               id: data.id,
-              label: data.nom,
+              label: data.name,
               dateStart: data.dateDebut,
               dateEnd: data.dateFin,
-              isFinished: data.estClos,
+              isFinished: data.isClosed,
               description: data.description ? data.description : undefined,
             } as project;
           });
@@ -79,40 +79,42 @@ export class ApiService {
   }
 
   public getProjectById(id: number): Observable<project> {
-    return this._httpClient.get<ApiResult>(this.baseUrl + '/projet/' + id).pipe(
-      first(),
-      map((data: ApiResult) => {
-        if (data.status === 'success' && data.result) {
-          // Data correct : mapping
-          return {
-            id: data.result.id,
-            label: data.result.nom,
-            dateStart: data.result.dateDebut,
-            dateEnd: data.result.dateFin,
-            isFinished: data.result.estClos,
-            description: data.result.description
-              ? data.result.description
-              : undefined,
-          } as project;
-        } else {
-          throw new Error(data.message ?? 'UnknownError');
-        }
-      })
-    );
+    return this._httpClient
+      .get<ApiResult>(this.baseUrl + '/project/' + id)
+      .pipe(
+        first(),
+        map((data: ApiResult) => {
+          if (data.status === 'success' && data.result) {
+            // Data correct : mapping
+            return {
+              id: data.result.id,
+              label: data.result.name,
+              dateStart: data.result.dateStart,
+              dateEnd: data.result.dateFin,
+              isFinished: data.result.isClosed,
+              description: data.result.description
+                ? data.result.description
+                : undefined,
+            } as project;
+          } else {
+            throw new Error(data.message ?? 'UnknownError');
+          }
+        })
+      );
   }
 
   // USER
 
   public getAllUser(): Observable<user[]> {
-    return this._httpClient.get<ApiResult>(this.baseUrl + '/utilisateur').pipe(
+    return this._httpClient.get<ApiResult>(this.baseUrl + '/users').pipe(
       first(),
       map((data: ApiResult) => {
         if (data.status === 'success' && data.result) {
           return data.result.map((data: any) => {
             return {
               login: data.login,
-              firstName: data.prenom,
-              lastName: data.nom,
+              firstName: data.firstName,
+              lastName: data.lastName,
               pole: data.pole,
             } as user;
           });
@@ -124,8 +126,9 @@ export class ApiService {
   }
 
   public getUserByLogin(login: string): Observable<user> {
+    console.log('rrrrrre');
     return this._httpClient
-      .get<ApiResult>(this.baseUrl + '/utilisateur/' + login)
+      .get<ApiResult>(this.baseUrl + '/users/' + login)
       .pipe(
         first(),
         map((data: ApiResult) => {
@@ -133,8 +136,8 @@ export class ApiService {
             // Data correct : mapping
             return {
               login: data.result.login,
-              firstName: data.result.prenom,
-              lastName: data.result.nom,
+              firstName: data.result.firstName,
+              lastName: data.result.lastName,
               pole: data.result.pole,
             } as user;
           } else {
@@ -145,7 +148,7 @@ export class ApiService {
   }
 
   public getAllRessources(): Observable<ressource[]> {
-    return this._httpClient.get<ApiResult>(this.baseUrl + '/ressource').pipe(
+    return this._httpClient.get<ApiResult>(this.baseUrl + '/ressources').pipe(
       first(),
       map((data: ApiResult) => {
         if (data.status === 'success' && data.result) {
@@ -153,10 +156,10 @@ export class ApiService {
           return data.result.map((data: any) => {
             return {
               id: data.id,
-              label: data.nom,
+              label: data.name,
               type: data.type,
               modele: data.modele,
-              isUsed: data.estUtilise,
+              isUsed: data.isUsed,
             } as ressource;
           });
         } else {
@@ -168,20 +171,22 @@ export class ApiService {
 
   public getSessionFromUser(login: string): Observable<any> {
     return this._httpClient
-      .get<ApiResult>(this.baseUrl + '/session/activesessions/' + login)
+      .get<ApiResult>(this.baseUrl + '/sessions/activesession/' + login)
       .pipe(
         first(),
         map((data) => {
-          if (data.status === 'success' && data.result.working) {
-            data.result.session = {
-              id: data.result.session.id,
-              timestampStart: data.result.session.horodatageDebut,
-              timestampEnd: data.result.session.horodatageFin,
-              loginUser: data.result.session.loginUtilisateur,
-              idProject: data.result.session.idProjet,
+          if (data.status === 'success' && data.result) {
+            data.result = {
+              id: data.result.id,
+              timestampStart: new Date(data.result.startTime),
+              timestampEnd: data.result.endTime
+                ? new Date(data.result.endTime)
+                : undefined,
+              loginUser: data.result.userLogin,
+              idProject: data.result.projectId,
             } as session;
             return data;
-          } else if (data.status === 'success' && !data.result.working) {
+          } else if (data.status === 'success' && !data.result) {
             return data;
           } else {
             throw new Error(data.message ?? 'UnknownError');
@@ -191,48 +196,140 @@ export class ApiService {
   }
 
   public createSession(session: session): Observable<any> {
-    return this._httpClient.post(this.baseUrl + '/session', {
+    let obj = {
       id: session.id,
-      horodatageDebut: session.timestampStart,
-      horodatageFin: session.timestampEnd,
-      loginUtilisateur: session.loginUser,
-      idProjet: session.idProject,
-    });
+      startTime:
+        [
+          session.timestampStart.getFullYear(),
+
+          this.pad(session.timestampStart.getMonth() + 1, 2),
+          this.pad(session.timestampStart.getDate(), 2),
+        ].join('-') +
+        ' ' +
+        [
+          this.pad(session.timestampStart.getHours() - 1, 2),
+          this.pad(session.timestampStart.getMinutes(), 2),
+          this.pad(session.timestampStart.getSeconds(), 2),
+        ].join(':'),
+      endTime: session.timestampEnd
+        ? [
+            session.timestampEnd?.getFullYear(),
+
+            this.pad(
+              (session.timestampEnd ? session.timestampEnd?.getMonth() : 0) + 1,
+              2
+            ),
+            this.pad(session.timestampEnd?.getDate(), 2),
+          ].join('-') +
+          ' ' +
+          [
+            this.pad(session.timestampEnd?.getHours() - 1, 2),
+            this.pad(session.timestampEnd?.getMinutes(), 2),
+            this.pad(session.timestampEnd?.getSeconds(), 2),
+          ].join(':')
+        : undefined,
+      loginUser: session.loginUser,
+      idProject: session.idProject,
+    };
+
+    console.log(obj);
+    return this._httpClient.post(this.baseUrl + '/sessions', obj);
   }
 
-  public updateSession(session: session): Observable<any> {
-    return this._httpClient.put<any>(this.baseUrl + '/session/' + session.id, {
-      horodatageDebut: session.timestampStart,
-      horodatageFin: session.timestampEnd,
-      loginUtilisateur: session.loginUser,
-      idProjet: session.idProject,
-    });
+  private pad(num: number | string, size: number): string {
+    num = num.toString();
+    while (num.length < size) num = '0' + num;
+    return num;
+  }
+
+  public updateSession(session: {
+    timestampStart?: Date;
+    timestampEnd?: Date;
+    loginUser?: string;
+    idProject: number;
+  }): Observable<any> {
+    let obj: {
+      startTime?: string;
+      endTime?: string;
+      loginUser?: string;
+      idProject?: number;
+    } = {};
+
+    if (session.timestampEnd) {
+      obj.endTime =
+        [
+          session.timestampEnd?.getFullYear(),
+          this.pad(
+            (session.timestampEnd ? session.timestampEnd?.getMonth() : 0) + 1,
+            2
+          ),
+          this.pad(session.timestampEnd?.getDate(), 2),
+        ].join('-') +
+        ' ' +
+        [
+          this.pad(session.timestampEnd?.getHours() - 1, 2),
+          this.pad(session.timestampEnd?.getMinutes(), 2),
+          this.pad(session.timestampEnd?.getSeconds(), 2),
+        ].join(':');
+    }
+    if (session.loginUser) {
+      obj.loginUser = session.loginUser;
+    }
+
+    return this._httpClient.patch<any>(
+      this.baseUrl + '/sessions/' + session.idProject,
+      obj
+    );
   }
 
   public addRessourceToSession(
     idRessource: number,
     idSession: number,
-    timestampStart: number = Math.round(new Date().getTime() / 1000)
+    timestampStart: Date = new Date()
   ): Observable<any> {
-    return this._httpClient.post(this.baseUrl + '/utilise', {
-      idRessource: idRessource,
-      idSession: idSession,
-      horodatageDebutUtilisation: timestampStart,
+    return this._httpClient.post(this.baseUrl + '/utilisations', {
+      ressourceId: idRessource,
+      sessionId: idSession,
+      usageStartDate:
+        [
+          timestampStart.getFullYear(),
+
+          this.pad(timestampStart.getMonth() + 1, 2),
+          this.pad(timestampStart.getDate(), 2),
+        ].join('-') +
+        ' ' +
+        [
+          this.pad(timestampStart.getHours() - 1, 2),
+          this.pad(timestampStart.getMinutes(), 2),
+          this.pad(timestampStart.getSeconds(), 2),
+        ].join(':'),
     });
   }
 
   public removeRessourceToSession(
     idUsage: number,
-    timestampEnd: number = Math.round(new Date().getTime() / 1000)
+    timestampEnd: Date = new Date()
   ): Observable<any> {
-    return this._httpClient.put(this.baseUrl + '/utilise/' + idUsage, {
-      horodatageFinUtilisation: timestampEnd,
+    return this._httpClient.patch(this.baseUrl + '/utilisations/' + idUsage, {
+      usageEndDate:
+        [
+          timestampEnd.getFullYear(),
+
+          this.pad(timestampEnd.getMonth() + 1, 2),
+          this.pad(timestampEnd.getDate(), 2),
+        ].join('-') +
+        ' ' +
+        [
+          this.pad(timestampEnd.getHours() - 1, 2),
+          this.pad(timestampEnd.getMinutes(), 2),
+          this.pad(timestampEnd.getSeconds(), 2),
+        ].join(':'),
     });
   }
 
   public getAllUsageOfSession(id: number): Observable<used[]> {
     return this._httpClient
-      .get<ApiResult>(this.baseUrl + '/session/usage/' + id)
+      .get<ApiResult>(this.baseUrl + '/utilisations/usage/' + id)
       .pipe(
         first(),
         map((data: ApiResult) => {
@@ -240,10 +337,10 @@ export class ApiService {
             return data.result.map((data: any) => {
               return {
                 id: data.id,
-                idRessource: data.idRessource,
-                idSession: data.idSession,
-                timestampStart: data.horodatageDebutUtilisation,
-                timestampEnd: data.horodatageFinUtilisation,
+                idRessource: data.ressourceId,
+                idSession: data.sessionId,
+                timestampStart: data.usageStartDate,
+                timestampEnd: data.usageEndDate,
               } as used;
             });
           } else {
@@ -254,17 +351,17 @@ export class ApiService {
   }
 
   public getAllSessions(): Observable<session[]> {
-    return this._httpClient.get<ApiResult>(this.baseUrl + '/session').pipe(
+    return this._httpClient.get<ApiResult>(this.baseUrl + '/sessions').pipe(
       first(),
       map((data: ApiResult) => {
         if (data.status === 'success' && data.result) {
           return data.result.map((data: any) => {
             return {
               id: data.id,
-              timestampStart: data.horodatageDebut,
-              timestampEnd: data.horodatageFin,
-              loginUser: data.loginUtilisateur,
-              idProject: data.idProjet,
+              timestampStart: data.startTime,
+              timestampEnd: data.endTime,
+              loginUser: data.userLogin,
+              idProject: data.projectId,
             } as session;
           });
         } else {
@@ -275,30 +372,51 @@ export class ApiService {
   }
 
   public getSessionById(id: string): Observable<session[]> {
-    return this._httpClient.get<ApiResult>(this.baseUrl + '/session' + id).pipe(
-      first(),
-      map((data: ApiResult) => {
-        if (data.status === 'success' && data.result) {
-          return data.result.map((data: any) => {
-            return {
-              id: data.id,
-              timestampStart: data.timestampStart,
-              timestampEnd: data.timestampEnd,
-              loginUser: data.loginUser,
-              idProject: data.idProject,
-            } as session;
-          });
-        } else {
-          throw new Error(data.message ?? 'UnknownError');
-        }
-      })
-    );
+    return this._httpClient
+      .get<ApiResult>(this.baseUrl + '/sessions/' + id)
+      .pipe(
+        first(),
+        map((data: ApiResult) => {
+          if (data.status === 'success' && data.result) {
+            return data.result.map((data: any) => {
+              return {
+                id: data.id,
+                timestampStart: data.startTime,
+                timestampEnd: data.endTime,
+                loginUser: data.userLogin,
+                idProject: data.projectId,
+              } as session;
+            });
+          } else {
+            throw new Error(data.message ?? 'UnknownError');
+          }
+        })
+      );
   }
 
-  public getTableData(idRessource: number, month: string): Observable<any> {
+  public getTableData(
+    firstObjectType: string,
+    firstFieldId: string | number,
+    secondaryObjectType: string,
+    month: number,
+    year: number
+  ): Observable<any> {
+    console.log({
+      firstObjectType: firstObjectType,
+      firstFieldId: firstFieldId,
+      secondaryObjectType: secondaryObjectType,
+      month: month,
+      year: year,
+    });
     return this._httpClient
-      .get<ApiResult>(this.baseUrl + '/data/get_ressource_timesheet', {
-        params: { idRessource: idRessource, month: month },
+      .get<ApiResult>(this.baseUrl + '/data', {
+        params: {
+          firstObjectType: firstObjectType,
+          firstFieldId: firstFieldId,
+          secondaryObjectType: secondaryObjectType,
+          month: month,
+          year: year,
+        },
       })
       .pipe(first());
   }
@@ -313,12 +431,12 @@ export class ApiService {
       headers: headers_object,
     };
     return this._httpClient.post(
-      this.baseUrl + '/projet',
+      this.baseUrl + '/project',
       {
-        nom: projet.label,
+        name: projet.label,
         dateDebut: projet.dateStart,
         dateFin: projet.dateEnd,
-        estClos: projet.isFinished,
+        isClosed: projet.isFinished,
         description: projet.description,
       },
       httpOptions
@@ -334,18 +452,18 @@ export class ApiService {
       headers: headers_object,
     };
     return this._httpClient.post(
-      this.baseUrl + '/ressource',
+      this.baseUrl + '/ressources',
       {
-        nom: ressource.label,
+        name: ressource.label,
         type: ressource.type,
-        modele: ressource.modele,
+        model: ressource.modele,
       },
       httpOptions
     );
   }
 
   // USER
-  public createUser(utilisateur:user): Observable<any> {
+  public createUser(utilisateur: user): Observable<any> {
     var headers_object = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + this.token,
@@ -355,11 +473,15 @@ export class ApiService {
     const httpOptions = {
       headers: headers_object,
     };
-    return this._httpClient.post(this.baseUrl + '/utilisateur', {
-      login: utilisateur.login,
-      prenom: utilisateur.firstName,
-      nom: utilisateur.lastName,
-      pole: utilisateur.pole,
-    }, httpOptions);
+    return this._httpClient.post(
+      this.baseUrl + '/users',
+      {
+        login: utilisateur.login,
+        firstName: utilisateur.firstName,
+        lastName: utilisateur.lastName,
+        pole: utilisateur.pole,
+      },
+      httpOptions
+    );
   }
 }

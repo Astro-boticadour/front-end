@@ -8,8 +8,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputMaskModule } from 'primeng/inputmask';
 import { BrowserModule } from '@angular/platform-browser';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TabViewModule } from 'primeng/tabview';
+import { ViewerComponent } from './viewer.component';
+import { ButtonModule } from 'primeng/button';
+
 @NgModule({
-  declarations: [GraphComponent, TableComponent],
+  declarations: [GraphComponent, TableComponent, ViewerComponent],
   imports: [
     CommonModule,
     TableModule,
@@ -18,6 +22,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     InputMaskModule,
     BrowserModule,
     ProgressSpinnerModule,
+    TabViewModule,
+    ButtonModule,
   ],
 })
 export class ViewerModule {}

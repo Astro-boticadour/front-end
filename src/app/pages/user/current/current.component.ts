@@ -42,7 +42,7 @@ export class CurrentComponent implements OnInit {
 
   ngOnInit() {
     this.getAllData();
-    interval(2000).subscribe(() => {
+    interval(1000).subscribe(() => {
       this.getAllData();
     });
 
@@ -59,11 +59,11 @@ export class CurrentComponent implements OnInit {
       .subscribe((data) => {
         if (data) {
           this.apiService.getSessionFromUser(data?.login).subscribe((data) => {
-            if (data.result.working) {
-              this.sessionInformation = data.result.session;
+            if (data.result) {
+              this.sessionInformation = data.result;
               this.timeSession =
                 Math.round(new Date().getTime() / 1000) -
-                this.sessionInformation.timestampStart;
+                this.sessionInformation.timestampStart.getTime() / 1000;
               this.sessionsStatus = SessionStatusEnum.Running;
               if (this.sessionInformation.id) {
                 this.apiService
@@ -80,6 +80,7 @@ export class CurrentComponent implements OnInit {
                       this.runningSessionElement.calculateShownOption();
                     }
                     this.dataReceived = true;
+                    this.isDataLoading = false;
                   });
               }
             } else {
@@ -103,9 +104,10 @@ export class CurrentComponent implements OnInit {
     if (login) {
       this.sessionInformation = {
         idProject: projectId,
-        timestampStart: Math.round(new Date().getTime() / 1000),
+        timestampStart: new Date(),
         loginUser: login,
       };
+      console.log(this.sessionInformation);
       this.apiService
         .createSession(this.sessionInformation)
         .subscribe((result) => {
@@ -121,10 +123,6 @@ export class CurrentComponent implements OnInit {
 
   closeSession() {
     if (this.sessionInformation) {
-      this.sessionInformation.timestampEnd = Math.round(
-        new Date().getTime() / 1000
-      );
-
       Object.keys(this.ressourcesUsed).forEach((x: string) => {
         if (this.sessionInformation.id) {
           this.apiService
@@ -137,27 +135,32 @@ export class CurrentComponent implements OnInit {
         }
       });
 
-      this.apiService.updateSession(this.sessionInformation).subscribe((x) => {
-        try {
-          if (x.status === 'success') {
-            this.sessionsStatus = SessionStatusEnum.Undefined;
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Fermeture de session réussi',
-            });
-          } else {
+      this.apiService
+        .updateSession({
+          idProject: this.sessionInformation.id ?? 0,
+          timestampEnd: new Date(),
+        })
+        .subscribe((x) => {
+          try {
+            if (x.status === 'success') {
+              this.sessionsStatus = SessionStatusEnum.Undefined;
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Fermeture de session réussi',
+              });
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Fermeture de session échoué',
+              });
+            }
+          } catch (e) {
             this.messageService.add({
               severity: 'error',
               summary: 'Fermeture de session échoué',
             });
           }
-        } catch (e) {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Fermeture de session échoué',
-          });
-        }
-      });
+        });
     }
   }
 

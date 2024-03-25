@@ -44,6 +44,7 @@ export class UserInformationService {
    * @returns Une énumération qui représente la réussite ou l'erreur rencontré
    */
   public fetchUserInformation(userLogin: string): void {
+    console.log('eeeeefrz');
     this.ApiService.getUserByLogin(userLogin).subscribe({
       next: (data: user) => {
         this.setUserInformation(data);

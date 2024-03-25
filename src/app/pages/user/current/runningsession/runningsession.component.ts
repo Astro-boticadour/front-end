@@ -50,6 +50,8 @@ export class RunningsessionComponent {
   constructor(private readonly apiService: ApiService) {
     interval(2000).subscribe(() => {
       this.apiService.getAllRessources().subscribe((data) => {
+        console.log(data);
+
         this.ressourcesList = data;
         this.calculateShownOption();
       });
@@ -80,9 +82,13 @@ export class RunningsessionComponent {
 
   calculateShownOption() {
     this.shownOptions = this.ressourcesList;
+    console.log(this.ressourcesList);
     this.shownOptions.forEach((data: ressource) => {
       if (data.id) {
-        if (data.isUsed === 1 && !this._selectedRessource.includes(data.id)) {
+        if (
+          data.isUsed === true &&
+          !this._selectedRessource.includes(data.id)
+        ) {
           data.disabled = true;
         } else {
           data.disabled = false;

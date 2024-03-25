@@ -3,6 +3,6 @@ export interface ressource {
   label: string;
   type: string;
   modele: string;
-  isUsed: number;
+  isUsed: boolean;
   disabled?: boolean;
 }

@@ -1,7 +1,7 @@
 export interface session {
   id?: number;
-  timestampStart: number;
-  timestampEnd?: number;
+  timestampStart: Date;
+  timestampEnd?: Date;
   loginUser: string;
   idProject: number;
 }

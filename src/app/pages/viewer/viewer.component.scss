@@ -1,0 +1,23 @@
+* {
+  color: rgb(0, 0, 0);
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  section > * {
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+  }
+}
+::ng-deep .p-dropdown {
+  width: 200px;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: row;
+  height: 190px;
+}

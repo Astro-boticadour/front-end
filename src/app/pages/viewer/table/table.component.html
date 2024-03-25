@@ -1,27 +1,11 @@
-<h2>Heures Totales</h2>
-<section>
-  <div class="input-field">
-    <label for="dateInput">Mois et année</label>
-    <p-inputMask id="dateInput" mask="99-9999" [(ngModel)]="date" placeholder="99-9999"></p-inputMask>
-  </div>
-
-  <div class="card flex justify-content-center">
-    <div class="input-field">
-      <label for="dateInput">Ressource</label>
-      <p-dropdown [options]="ressourceList" optionLabel="label" optionValue="id" [(ngModel)]="ressourceNumber"
-        [filter]="true">
-      </p-dropdown>
-    </div>
-
-    <div style="color: red">
-      {{ error }}
-    </div>
-  </div>
-  </section>
 <section>
   <ng-container *ngIf="!loading; else loadingDiv">
-    <p-table *ngIf="sessions.length > 0" [value]="sessions" [tableStyle]="{ 'min-width': '50rem' }"
-      styleClass="p-datatable-gridlines p-datatable-sm">
+    <p-table
+      *ngIf="sessions.length > 0"
+      [value]="sessions"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      styleClass="p-datatable-gridlines p-datatable-sm"
+    >
       <ng-template pTemplate="header">
         <tr>
           <th>Projet</th>

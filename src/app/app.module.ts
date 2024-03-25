@@ -15,6 +15,7 @@ import { ViewerModule } from './pages/viewer/viewer.module';
 import { UserModule } from './pages/user/user.module';
 import { TopbarComponent } from './shared/components/topbar/topbar.component';
 import { HomeModule } from './pages/home/home.module';
+import { ActivityService } from './shared/services/activity.service';
 @NgModule({
   declarations: [AppComponent, SidebarComponent, TopbarComponent],
   imports: [
@@ -31,7 +32,7 @@ import { HomeModule } from './pages/home/home.module';
     UserModule,
     HomeModule,
   ],
-  providers: [DialogService],
+  providers: [DialogService, ActivityService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
