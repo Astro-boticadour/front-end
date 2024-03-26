@@ -11,6 +11,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TabViewModule } from 'primeng/tabview';
 import { ViewerComponent } from './viewer.component';
 import { ButtonModule } from 'primeng/button';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [GraphComponent, TableComponent, ViewerComponent],
@@ -24,6 +25,7 @@ import { ButtonModule } from 'primeng/button';
     ProgressSpinnerModule,
     TabViewModule,
     ButtonModule,
+    ChartModule,
   ],
 })
 export class ViewerModule {}

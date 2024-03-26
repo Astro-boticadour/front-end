@@ -28,12 +28,13 @@ export class ViewerComponent {
     | project[]
     | undefined;
   public labelName: string | undefined;
-  public firstDropdownElementSelection: string | undefined;
+  public labelValue: string | undefined;
+  public firstDropdownElementSelection: string | number | undefined;
 
   public secondDropdownTypeOption: labelType[] | undefined;
   public secondDropdownTypeSelection: TypeEnum | undefined;
 
-  public data!: number[][];
+  public data!: any;
 
   public set date(value: string) {
     this._date = value;
@@ -61,21 +62,29 @@ export class ViewerComponent {
       switch (this.firstDropdownTypeSelection) {
         case TypeEnum.Project:
           this.apiService.getAllProject().subscribe((e) => {
+            console.log(e);
+
             this.firstDropdownElementOption = e;
           });
           this.labelName = 'label';
+          this.labelValue = 'id';
           break;
         case TypeEnum.Ressource:
           this.apiService.getAllRessources().subscribe((e) => {
             this.firstDropdownElementOption = e;
           });
           this.labelName = 'label';
+          this.labelValue = 'id';
+
           break;
         case TypeEnum.User:
           this.apiService.getAllUser().subscribe((e) => {
+            console.log(e);
+
             this.firstDropdownElementOption = e;
           });
           this.labelName = 'login';
+          this.labelValue = 'login';
           break;
         default:
           break;
@@ -116,7 +125,9 @@ export class ViewerComponent {
           year
         )
         .subscribe((data) => {
-          console.log(data);
+          this.data = data.result.filter(
+            (e: any) => Number(e.duration_in_hours) !== 0
+          );
         });
     }
 

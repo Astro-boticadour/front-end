@@ -408,6 +408,7 @@ export class ApiService {
       month: month,
       year: year,
     });
+
     return this._httpClient
       .get<ApiResult>(this.baseUrl + '/data', {
         params: {

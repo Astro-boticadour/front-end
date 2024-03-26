@@ -1,1 +1,15 @@
-<p>graph works!</p>
+<div style="width: 100%; display: flex">
+  <div style="width: 20rem">
+    <p-chart type="pie" [data]="pieChartData"></p-chart>
+  </div>
+  <p-chart
+    type="line"
+    [data]="barChartData"
+    width="1000px"
+    height="500px"
+    [options]="{
+      responsive: false,
+      maintainAspectRatio: false
+    }"
+  ></p-chart>
+</div>

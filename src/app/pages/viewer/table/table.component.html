@@ -1,28 +1,29 @@
 <section>
-  <ng-container *ngIf="!loading; else loadingDiv">
+  <ng-container *ngIf="dataTable !== undefined && dataTable.length > 0">
     <p-table
-      *ngIf="sessions.length > 0"
-      [value]="sessions"
+      *ngIf="dataTable.length > 0"
+      [value]="dataTable"
       [tableStyle]="{ 'min-width': '50rem' }"
       styleClass="p-datatable-gridlines p-datatable-sm"
     >
       <ng-template pTemplate="header">
         <tr>
           <th>Projet</th>
-          <th *ngFor="let date of sessions[0].workingDays; index as i">
+          <th
+            *ngFor="
+              let e of dataTable[0].slice(1, dataTable[0].length);
+              index as i
+            "
+          >
             {{ i + 1 }}
           </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-v>
         <tr>
-          <td>{{ v.projectName }}</td>
-          <td *ngFor="let r of v.workingDays">{{ r }}</td>
+          <td *ngFor="let r of v">{{ r }}</td>
         </tr>
       </ng-template>
     </p-table>
   </ng-container>
-  <ng-template #loadingDiv>
-    <p-progressSpinner></p-progressSpinner>
-  </ng-template>
 </section>

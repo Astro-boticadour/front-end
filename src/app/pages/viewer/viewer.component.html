@@ -29,7 +29,7 @@
         *ngIf="secondDropdownTypeOption"
         [options]="firstDropdownElementOption"
         [optionLabel]="labelName"
-        [optionValue]="labelName"
+        [optionValue]="labelValue"
         [(ngModel)]="firstDropdownElementSelection"
         [filter]="true"
       >
@@ -58,9 +58,9 @@
 
 <p-tabView>
   <p-tabPanel header="Tableau">
-    <app-table></app-table>
+    <app-table [data]="[data, date]"></app-table>
   </p-tabPanel>
   <p-tabPanel header="Graphique">
-    <app-graph></app-graph>
+    <app-graph [data]="data" style="width: 100%; display: block"></app-graph>
   </p-tabPanel>
 </p-tabView>
