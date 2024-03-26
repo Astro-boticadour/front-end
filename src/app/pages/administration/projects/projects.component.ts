@@ -18,8 +18,16 @@ export class ProjectsComponent {
   isFinished!: boolean;
   description!: string;
 
+
+
   constructor(private apiService: ApiService) {
     this.getTableData();
+  
+  }
+
+  public dateToString(date: Date) {
+    ((date) ? date.toString(): '')
+    return (date) ? date.toString(): ''
   }
 
   public getTableData(): void {
@@ -51,4 +59,20 @@ export class ProjectsComponent {
       });
     return 1;
   }
+
+  public delete(id:number, label:String)
+  {
+    if(confirm("Souhaitez-vous supprimer l'utilisateur " + label +" ?"))
+    {
+    this.apiService.deleteProject(id)
+    .subscribe((data) => {
+      this.getTableData();
+      if (data.status === 'success') 
+      {
+        alert('Utilisateur '+label+' supprimée');
+      } else {
+        alert('erreur');
+      }
+    });
+  }}
 }

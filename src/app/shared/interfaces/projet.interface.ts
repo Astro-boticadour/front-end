@@ -4,5 +4,5 @@ export interface project {
   dateStart: Date,
   dateEnd: Date,
   isFinished: boolean,
-  description?: string
+  description: string
 }

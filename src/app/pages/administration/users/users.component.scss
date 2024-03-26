@@ -11,7 +11,11 @@
   .expanded-table {
     width: 100%;
   }
-  
+
+  .delete-column {
+    text-align: right;
+  }
+
   
   :host {
     display: flex;
