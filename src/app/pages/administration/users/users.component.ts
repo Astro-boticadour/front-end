@@ -46,4 +46,23 @@ export class UsersComponent {
                             this.getTableData();});
       return 1
   }
+
+  public delete(login:String)
+  {
+    if(confirm("Souhaitez-vous supprimer le projet " + login +" ?"))
+    {
+    this.apiService.deleteUser(login)
+    .subscribe((data) => {
+      this.getTableData();
+      if (data.status === 'success') 
+      {
+        alert('Projet '+login+' supprimée');
+      } else {
+        alert('erreur');
+      }
+    });
+  }
+
+    return 0;
+  }
 }

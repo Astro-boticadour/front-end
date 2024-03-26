@@ -447,6 +447,22 @@ export class ApiService {
       httpOptions
     );
   }
+
+  public deleteProject(id: number)
+  {
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token,
+    });
+
+    const httpOptions = {
+      headers: headers_object,
+    };
+    return this._httpClient.delete<{result: {id: number}, status: string}>(
+      this.baseUrl + '/projects/'+id+"/",httpOptions
+    );
+  }
+
   public createRessource(ressource: ressource): Observable<any> {
     var headers_object = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -478,7 +494,7 @@ export class ApiService {
       headers: headers_object,
     };
     return this._httpClient.delete<{result: {id: number}, status: string}>(
-      this.baseUrl + '/ressources/'+id,httpOptions
+      this.baseUrl + '/ressources/'+id+"/",httpOptions
     );
   }
 
@@ -502,5 +518,20 @@ export class ApiService {
       },
       httpOptions
     )
+  }
+
+  public deleteUser(login:String)
+  {
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token,
+    });
+
+    const httpOptions = {
+      headers: headers_object,
+    };
+    return this._httpClient.delete<{result: {login:String}, status:String}>(
+      this.baseUrl + '/users/'+login+"/",httpOptions
+    );
   }
 }

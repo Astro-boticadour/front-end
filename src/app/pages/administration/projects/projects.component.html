@@ -74,6 +74,7 @@
           <th>Date de fin</th>
           <th>Est clos</th>
           <th>Description</th>
+          <th class="delete-column"> </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-project>
@@ -90,8 +91,8 @@
             />
 
           </td>
-
           <td>{{ project.description }}</td>
+          <td class="delete-column"><p-button icon="pi pi-trash" severity="danger" (click)="delete(project.id, project.label)" ></p-button></td>
         </tr>
       </ng-template>
     </p-table>
