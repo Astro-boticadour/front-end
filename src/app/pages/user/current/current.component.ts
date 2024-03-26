@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { interval, last } from 'rxjs';
 import { SessionStatusEnum } from 'src/app/shared/enums/session-status.model';
 import { ressource } from 'src/app/shared/interfaces/ressource.interface';
 import { session } from 'src/app/shared/interfaces/session.interface';
@@ -8,6 +7,8 @@ import { used } from 'src/app/shared/interfaces/utilise.interface';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { UserInformationService } from 'src/app/shared/services/user-information.service';
 import { RunningsessionComponent } from './runningsession/runningsession.component';
+import { user } from 'src/app/shared/interfaces/utilisateur.interface';
+import { WebsocketService } from 'src/app/shared/services/websocket.service';
 
 @Component({
   selector: 'app-current',
@@ -30,21 +31,21 @@ export class CurrentComponent implements OnInit {
 
   public isDataLoading: boolean = false;
 
+  public ressourcesList: ressource[] = [];
+
   @ViewChild('runningSession') runningSessionElement!: RunningsessionComponent;
 
   constructor(
     private readonly apiService: ApiService,
     private readonly userInformationService: UserInformationService,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
+    private readonly websocketService: WebsocketService
   ) {
     this.sessionsStatus = SessionStatusEnum.Undefined;
   }
 
   ngOnInit() {
     this.getAllData();
-    interval(1000).subscribe(() => {
-      this.getAllData();
-    });
 
     this.messageService.add({
       severity: 'success',
@@ -56,15 +57,63 @@ export class CurrentComponent implements OnInit {
   getAllData() {
     this.userInformationService
       .getUserInformationObservable()
-      .subscribe((data) => {
-        if (data) {
-          this.apiService.getSessionFromUser(data?.login).subscribe((data) => {
-            if (data.result) {
-              this.sessionInformation = data.result;
-              this.timeSession =
-                Math.round(new Date().getTime() / 1000) -
-                this.sessionInformation.timestampStart.getTime() / 1000;
-              this.sessionsStatus = SessionStatusEnum.Running;
+      .subscribe((dataUser: user | undefined) => {
+        if (dataUser) {
+          this.apiService
+            .getSessionFromUser(dataUser.login)
+            .subscribe((dataSession: any) => {
+              if (dataSession.result !== null) {
+                this.sessionInformation = dataSession.result;
+                this.sessionsStatus = SessionStatusEnum.Running;
+              } else {
+                this.sessionsStatus = SessionStatusEnum.Undefined;
+              }
+              console.log(this.sessionInformation);
+            });
+
+          this.apiService.getAllRessources().subscribe((dataSession: any) => {
+            this.ressourcesList = dataSession;
+          });
+
+          this.websocketService.connect('sessions');
+
+          this.websocketService
+            .listen('sessions')
+            .subscribe((dataTempo: { reason: string; data: any }) => {
+              const dataSessions = {
+                id: dataTempo.data.id,
+                idProject: dataTempo.data.projectId,
+                timestampStart: dataTempo.data.startTime,
+                timestampEnd: dataTempo.data.endTime,
+                loginUser: dataTempo.data.userLogin,
+              } as session;
+
+              if (dataSessions.loginUser === dataUser.login) {
+                if (dataTempo.reason !== 'updated') {
+                  this.sessionInformation = dataSessions;
+                  this.sessionsStatus = SessionStatusEnum.Running;
+                } else {
+                  this.sessionsStatus = SessionStatusEnum.Undefined;
+                }
+              }
+            });
+
+          this.websocketService.connect('ressources');
+
+          this.websocketService
+            .listen('ressources')
+            .subscribe((dataTempo: { reason: string; data: any }) => {
+              const dataSessions = {
+                id: dataTempo.data.id,
+                label: dataTempo.data.name,
+                type: dataTempo.data.type,
+                modele: dataTempo.data.model,
+                isUsed: dataTempo.data.isUsed,
+              } as ressource;
+
+              this.apiService.getAllRessources().subscribe((data) => {
+                this.ressourcesList = data;
+              });
               if (this.sessionInformation.id) {
                 this.apiService
                   .getAllUsageOfSession(this.sessionInformation.id)
@@ -83,12 +132,10 @@ export class CurrentComponent implements OnInit {
                     this.isDataLoading = false;
                   });
               }
-            } else {
-              this.dataReceived = true;
-            }
-          });
+            });
         }
       });
+    this.dataReceived = true;
   }
 
   updateSessionForUser() {
