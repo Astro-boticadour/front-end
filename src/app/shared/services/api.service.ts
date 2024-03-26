@@ -418,31 +418,37 @@ export class ApiService {
       Authorization: 'Bearer ' + this.token,
     });
 
-    const convertedDateDeb = [
+    let obj: {
+      name?: string;
+      startDate?: string;
+      endDate?: string;
+      description?: string;
+    } = {};
+
+    obj.name = projet.label;
+    obj.description = projet.description;
+    obj.startDate = [
       projet.dateStart.getFullYear(),
 
       this.pad(projet.dateStart.getMonth() + 1, 2),
       this.pad(projet.dateStart.getDate(), 2),
     ].join('-');
 
-    const convertedDateFin = [
+    if (projet.dateEnd) {
+    obj.endDate = [
       projet.dateEnd.getFullYear(),
 
       this.pad(projet.dateEnd.getMonth() + 1, 2),
       this.pad(projet.dateEnd.getDate(), 2),
     ].join('-');
+  }
 
     const httpOptions = {
       headers: headers_object,
     };
     return this._httpClient.post(
       this.baseUrl + '/projects',
-      {
-        name: projet.label,
-        startDate: convertedDateDeb,
-        endDate: convertedDateFin,
-        description: projet.description,
-      },
+      obj,
       httpOptions
     );
   }
@@ -461,6 +467,50 @@ export class ApiService {
       httpOptions
     );
   }
+
+  public majProject(projet: project): Observable<any> {
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token,
+    });
+
+    let obj: {
+      name?: string;
+      startDate?: string;
+      endDate?: string;
+      description?: string;
+      isClosed?: boolean;
+    } = {};
+
+    obj.name = projet.label;
+    obj.description = projet.description;
+    obj.isClosed = projet.isFinished;
+    obj.startDate = [
+      projet.dateStart.getFullYear(),
+
+      this.pad(projet.dateStart.getMonth() + 1, 2),
+      this.pad(projet.dateStart.getDate(), 2),
+    ].join('-');
+
+    if (projet.dateEnd) {
+    obj.endDate = [
+      projet.dateEnd.getFullYear(),
+
+      this.pad(projet.dateEnd.getMonth() + 1, 2),
+      this.pad(projet.dateEnd.getDate(), 2),
+    ].join('-');
+  }
+
+    const httpOptions = {
+      headers: headers_object,
+    };
+    return this._httpClient.patch(
+      this.baseUrl + '/projects/'+projet.id+'/',
+      obj,
+      httpOptions
+    );
+  }
+  
 
   public createRessource(ressource: ressource): Observable<any> {
     var headers_object = new HttpHeaders({

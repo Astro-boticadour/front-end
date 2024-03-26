@@ -18,11 +18,11 @@ export class ProjectsComponent {
   isFinished!: boolean;
   description!: string;
 
+  tableTemp!: project;
 
 
   constructor(private apiService: ApiService) {
     this.getTableData();
-  
   }
 
   public dateToString(date: Date) {
@@ -33,18 +33,20 @@ export class ProjectsComponent {
   public getTableData(): void {
     this.apiService.getAllProject().subscribe((data) => {
       this.tableData = data;
+      this.tableData.forEach((e: project) => {e.editing = false})
     });
   }
 
   public create() {
-    if (!(this.label && this.dateStart && this.dateEnd && this.description)) {
-      alert('veuillez remplir tous les champs avant de créer un projet');
+    if (!(this.label && this.dateStart && this.description)) {
+      alert('veuillez remplir le nom, la date de début et la description avant de créer un projet');
       return 0;
     }
+
     this.apiService
       .createProject({
         label: this.label,
-        dateStart: this.dateStart,
+        dateStart: this.dateStart ?? '',
         dateEnd: this.dateEnd,
         isFinished: this.isFinished,
         description: this.description,
@@ -75,4 +77,59 @@ export class ProjectsComponent {
       }
     });
   }}
+
+  public format(date: string): string {
+    if(date)
+    {
+      console.log(typeof date)
+      return new Date(date).toLocaleDateString("fr"); 
+    }
+    else
+    {
+      return '';
+    }
+  }
+
+  public edit(e: project)
+  {
+    e.editing = true;
+    e.dateStart = new Date(e.dateStart);
+    e.dateEnd = new Date(e.dateEnd);
+    this.tableTemp = {label: e.label, dateStart: e.dateStart, dateEnd :e.dateEnd, isFinished : e.isFinished, description : e.description};
+    console.log(this.tableTemp);
+  }
+
+  public saveEdit(e: project)
+  {
+    if (!(e.label && e.dateStart && e.description)) {
+      alert('veuillez remplir le nom, la date de début et la description avant de modifier un projet');
+      return 0;
+    }
+
+    this.apiService
+      .majProject(e)
+      .subscribe((data) => {
+        this.getTableData();
+        if (data.status === 'success') {
+          e.editing = false;
+          alert('projet modifié');
+        } else {
+          alert('erreur');
+        }
+      });
+    return 1;
+  } 
+  
+  public cancelEdit(e: project)
+  {
+    console.log(e);
+    console.log(this.tableTemp);
+    e.label = this.tableTemp.label;
+    e.dateStart = this.tableTemp.dateStart;
+    e.dateEnd = this.tableTemp.dateEnd;
+    e.isFinished = this.tableTemp.isFinished;
+    e.description = this.tableTemp.description;
+    e.editing = false;
+    console.log(e);
+  }
 }
