@@ -65,8 +65,8 @@ export class ApiService {
             return {
               id: data.id,
               label: data.name,
-              dateStart: data.dateDebut,
-              dateEnd: data.dateFin,
+              dateStart: data.startDate,
+              dateEnd: data.endDate,
               isFinished: data.isClosed,
               description: data.description ? data.description : undefined,
             } as project;
@@ -126,7 +126,6 @@ export class ApiService {
   }
 
   public getUserByLogin(login: string): Observable<user> {
-    console.log('rrrrrre');
     return this._httpClient
       .get<ApiResult>(this.baseUrl + '/users/' + login)
       .pipe(
@@ -232,7 +231,6 @@ export class ApiService {
       idProject: session.idProject,
     };
 
-    console.log(obj);
     return this._httpClient.post(this.baseUrl + '/sessions', obj);
   }
 
@@ -401,13 +399,7 @@ export class ApiService {
     month: number,
     year: number
   ): Observable<any> {
-    console.log({
-      firstObjectType: firstObjectType,
-      firstFieldId: firstFieldId,
-      secondaryObjectType: secondaryObjectType,
-      month: month,
-      year: year,
-    });
+
     return this._httpClient
       .get<ApiResult>(this.baseUrl + '/data', {
         params: {
@@ -427,17 +419,30 @@ export class ApiService {
       Authorization: 'Bearer ' + this.token,
     });
 
+    const convertedDateDeb = [
+      projet.dateStart.getFullYear(),
+
+      this.pad(projet.dateStart.getMonth() + 1, 2),
+      this.pad(projet.dateStart.getDate(), 2),
+    ].join('-');
+
+    const convertedDateFin = [
+      projet.dateEnd.getFullYear(),
+
+      this.pad(projet.dateEnd.getMonth() + 1, 2),
+      this.pad(projet.dateEnd.getDate(), 2),
+    ].join('-');
+
     const httpOptions = {
       headers: headers_object,
     };
     return this._httpClient.post(
-      this.baseUrl + '/project',
+      this.baseUrl + '/projects',
       {
         name: projet.label,
-        dateDebut: projet.dateStart,
-        dateFin: projet.dateEnd,
-        isClosed: projet.isFinished,
-        description: projet.description,
+        startDate: convertedDateDeb,
+        endDate: convertedDateFin,
+        description: projet.description
       },
       httpOptions
     );
@@ -462,6 +467,21 @@ export class ApiService {
     );
   }
 
+  public deleteRessource(id: number)
+  {
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token,
+    });
+
+    const httpOptions = {
+      headers: headers_object,
+    };
+    return this._httpClient.delete<{result: {id: number}, status: string}>(
+      this.baseUrl + '/ressources/'+id,httpOptions
+    );
+  }
+
   // USER
   public createUser(utilisateur: user): Observable<any> {
     var headers_object = new HttpHeaders({
@@ -469,7 +489,6 @@ export class ApiService {
       Authorization: 'Bearer ' + this.token,
     });
 
-    console.log(headers_object);
     const httpOptions = {
       headers: headers_object,
     };
@@ -482,6 +501,6 @@ export class ApiService {
         pole: utilisateur.pole,
       },
       httpOptions
-    );
+    )
   }
 }

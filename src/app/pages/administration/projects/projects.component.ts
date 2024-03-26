@@ -18,8 +18,16 @@ export class ProjectsComponent {
   isFinished!: boolean;
   description!: string;
 
+
+
   constructor(private apiService: ApiService) {
     this.getTableData();
+  
+  }
+
+  public dateToString(date: Date) {
+    ((date) ? date.toString(): '')
+    return (date) ? date.toString(): ''
   }
 
   public getTableData(): void {

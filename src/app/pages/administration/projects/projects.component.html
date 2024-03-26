@@ -79,18 +79,16 @@
       <ng-template pTemplate="body" let-project>
         <tr>
           <td>{{ project.label }}</td>
-          <td>{{ project.dateStart }}</td>
+          <td>{{ dateToString(project.dateStart) }}</td>
           <td>{{ project.dateEnd }}</td>
           <td>
             <img
               class="icon"
-              *ngIf="project.isFinished; else notFinished"
+              *ngIf="project.isFinished"
               class="icon role-icon"
               src="/assets/icons/Done.svg"
             />
-            <ng-template #notFinished>
-              <img class="icon" src="/assets/icons/Close.svg" />
-            </ng-template>
+
           </td>
 
           <td>{{ project.description }}</td>

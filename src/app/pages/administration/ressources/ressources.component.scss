@@ -13,6 +13,10 @@ p {
   width: 100%;
 }
 
+.delete-column {
+  text-align: right;
+}
+
 :host {
   display: flex;
   flex-direction: column;

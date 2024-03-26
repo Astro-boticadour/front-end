@@ -51,4 +51,23 @@ export class RessourcesComponent {
       });
     return 1;
   }
+  
+  public delete(id:number, label:String)
+  {
+    if(confirm("Souhaitez-vous supprimer la ressource " + label +" ?"))
+    {
+    this.apiService.deleteRessource(id)
+    .subscribe((data) => {
+      this.getTableData();
+      if (data.status === 'success') 
+      {
+        alert('ressource '+label+' supprimée');
+      } else {
+        alert('erreur');
+      }
+    });
+  }
+
+    return 0;
+  }
 }
