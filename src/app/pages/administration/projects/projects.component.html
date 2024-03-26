@@ -75,13 +75,14 @@
           <th>Est clos</th>
           <th>Description</th>
           <th class="delete-column"> </th>
+          <th class="delete-column"> </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-project>
-        <tr>
+      <ng-template pTemplate="body" let-project  >
+        <tr *ngIf="!project.editing">
           <td>{{ project.label }}</td>
-          <td>{{ dateToString(project.dateStart) }}</td>
-          <td>{{ project.dateEnd }}</td>
+          <td>{{ format(project.dateStart) }}</td>
+          <td>{{ format(project.dateEnd)  }}</td>
           <td>
             <img
               class="icon"
@@ -92,7 +93,17 @@
 
           </td>
           <td>{{ project.description }}</td>
+          <td class="delete-column"><p-button icon="pi pi-pencil" severity="warning" (click)="edit(project)" ></p-button></td>
           <td class="delete-column"><p-button icon="pi pi-trash" severity="danger" (click)="delete(project.id, project.label)" ></p-button></td>
+        </tr>
+        <tr *ngIf="project.editing">
+          <td><input type="text" [(ngModel)]="project.label"></td>
+          <td><p-calendar appendTo="body" [(ngModel)]="project.dateStart" dateFormat="dd/mm/yy"></p-calendar></td>
+          <td><p-calendar appendTo="body" [(ngModel)]="project.dateEnd" dateFormat="dd/mm/yy"></p-calendar></td>
+          <td><input type="checkbox" [(ngModel)]="project.isFinished" ></td>
+          <td><input type="textarea" [(ngModel)]="project.description" ></td>
+          <td class="delete-column"><p-button icon="pi pi-check" severity="info" (click)="saveEdit(project)" ></p-button></td>
+          <td class="delete-column"><p-button icon="pi pi-times" severity="danger" (click)="cancelEdit(project)" ></p-button></td>
         </tr>
       </ng-template>
     </p-table>

@@ -3,4 +3,5 @@ export interface user {
   firstName: string;
   lastName: string;
   pole: string;
+  editing?: boolean;
 }
