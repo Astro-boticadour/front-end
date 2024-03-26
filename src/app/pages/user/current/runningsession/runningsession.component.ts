@@ -11,7 +11,11 @@ import { ApiService } from 'src/app/shared/services/api.service';
 export class RunningsessionComponent {
   public shownOptions: ressource[] = [];
 
-  public ressourcesList: ressource[] = [];
+  @Input() set ressourcesList(value: ressource[]) {
+    this._ressourcesList = value;
+    this.calculateShownOption();
+  }
+  private _ressourcesList!: ressource[];
 
   public _selectedRessource: number[] = [];
 
@@ -48,15 +52,6 @@ export class RunningsessionComponent {
   @Output() updateSessionEvent = new EventEmitter<number[]>();
 
   constructor(private readonly apiService: ApiService) {
-    interval(2000).subscribe(() => {
-      this.apiService.getAllRessources().subscribe((data) => {
-        console.log(data);
-
-        this.ressourcesList = data;
-        this.calculateShownOption();
-      });
-    });
-
     interval(5000).subscribe((data: any) => {
       if (this.literalTimestamp) {
         this.literalTimestamp += 5;
@@ -81,8 +76,7 @@ export class RunningsessionComponent {
   }
 
   calculateShownOption() {
-    this.shownOptions = this.ressourcesList;
-    console.log(this.ressourcesList);
+    this.shownOptions = this._ressourcesList;
     this.shownOptions.forEach((data: ressource) => {
       if (data.id) {
         if (
