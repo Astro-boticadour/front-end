@@ -61,15 +61,25 @@
           <th>Nom</th>
           <th>Pôle</th>
           <th class="delete-column"> </th>
+          <th class="delete-column"> </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-user>
-        <tr>
+        <tr *ngIf="!user.editing">
           <td>{{ user.login }}</td>
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.pole }}</td>
+          <td class="delete-column"><p-button icon="pi pi-pencil" severity="warning" (click)="edit(user)" ></p-button></td>
           <td class="delete-column"><p-button icon="pi pi-trash" severity="danger" (click)="delete(user.login)" ></p-button></td>
+        </tr>
+        <tr *ngIf="user.editing">
+          <td>{{ user.login }}</td>
+          <td><input type="text" [(ngModel)]="user.firstName"></td>
+          <td><input type="text" [(ngModel)]="user.lastName"></td>
+          <td><input type="text" [(ngModel)]="user.pole"></td>
+          <td class="delete-column"><p-button icon="pi pi-check" severity="info" (click)="saveEdit(user)" ></p-button></td>
+          <td class="delete-column"><p-button icon="pi pi-times" severity="danger" (click)="cancelEdit(user)" ></p-button></td>
         </tr>
       </ng-template>
     </p-table>

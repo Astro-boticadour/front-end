@@ -569,6 +569,26 @@ export class ApiService {
     );
   }
 
+  public majUser(utilisateur: user): Observable<any> {
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token,
+    });
+
+    const httpOptions = {
+      headers: headers_object,
+    };
+    return this._httpClient.patch(
+      this.baseUrl + '/users/'+utilisateur.login+"/",
+      {
+        firstName: utilisateur.firstName,
+        lastName: utilisateur.lastName,
+        pole: utilisateur.pole,
+      },
+      httpOptions
+    );
+  }
+
   public deleteUser(login: String) {
     var headers_object = new HttpHeaders({
       'Content-Type': 'application/json',
