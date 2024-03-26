@@ -58,9 +58,12 @@
 
 <p-tabView>
   <p-tabPanel header="Tableau">
-    <app-table [data]="[data, date]"></app-table>
+    <app-table [data]="[data, dateToShow]"></app-table>
   </p-tabPanel>
   <p-tabPanel header="Graphique">
-    <app-graph [data]="data" style="width: 100%; display: block"></app-graph>
+    <app-graph
+      [data]="[data, dateToShow]"
+      style="width: 100%; display: block"
+    ></app-graph>
   </p-tabPanel>
 </p-tabView>

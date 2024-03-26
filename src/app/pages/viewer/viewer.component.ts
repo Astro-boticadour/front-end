@@ -40,6 +40,8 @@ export class ViewerComponent {
     this._date = value;
   }
 
+  public dateToShow!: string;
+
   public get date(): string {
     return this._date;
   }
@@ -103,10 +105,11 @@ export class ViewerComponent {
       this.firstDropdownTypeSelection
     ) {
       var todayDate = new Date();
+      this.dateToShow = this._date;
 
       var month = Number(this.date.slice(0, 2));
       var year = Number(this.date.slice(3, 9));
-      console.log(this.date, month, todayDate.getMonth() + 1);
+
       if (!/[0-9]{2}-[0-9]{4}/g.test(this.date)) {
         this.error = 'Format de date non valide';
         return;
@@ -128,6 +131,9 @@ export class ViewerComponent {
           this.data = data.result.filter(
             (e: any) => Number(e.duration_in_hours) !== 0
           );
+          if (this.data.length === 0) {
+            this.error = 'Aucune donnée';
+          }
         });
     }
 

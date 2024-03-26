@@ -19,12 +19,17 @@ type BarGraph = {
 })
 export class GraphComponent {
   @Input() set data(value: any) {
-    this.pieChartData = this.formatDataPieGraph(value);
-    this.barChartData = this.formatDataBarGraph(value);
+    console.log('eeee', value);
+    if (value[1] && value[0]) {
+      var month = Number(value[1].slice(0, 2));
+      var year = Number(value[1].slice(3, 9));
+      this.pieChartData = this.formatDataPieGraph(value[0]);
+      this.barChartData = this.formatDataBarGraph(value[0], year, month);
+    }
   }
 
   public pieChartData!: PieGraph;
-  public barChartData!: BarGraph;
+  public barChartData!: BarGraph | undefined;
 
   public formatDataPieGraph(data: any): PieGraph {
     let transformedData = {};
@@ -66,16 +71,23 @@ export class GraphComponent {
       datasets: [{ data: dataGraph }],
     };
   }
-  public formatDataBarGraph(data: any): BarGraph {
-    console.log('eeedde', data);
+  public formatDataBarGraph(
+    data: any,
+    year: number,
+    month: number
+  ): BarGraph | undefined {
+    console.log('srhtetrbs', data);
     let transformedData: { [key: string]: number[] } = {};
 
-    // Initialize transformedData with arrays of 31 zeros for each row_label
+    const getDays = (year: number, month: number) => {
+      return new Date(year, month, 0).getDate();
+    };
+    let nbrOfDay = getDays(year, month);
+
     data.forEach((e: { row_label: string }) => {
-      transformedData[e.row_label] = Array(31).fill(0);
+      transformedData[e.row_label] = Array(nbrOfDay).fill(0);
     });
 
-    // Fill in actual data where available
     data.forEach(
       (e: {
         row_label: string;
@@ -87,7 +99,7 @@ export class GraphComponent {
         );
       }
     );
-
+    console.log(transformedData);
     var datasets: { label: string; data: number[] }[] = [];
 
     Object.keys(transformedData).forEach((element: string) => {
@@ -97,12 +109,16 @@ export class GraphComponent {
       });
     });
 
-    console.log('eeedde', {
-      labels: [...Array(31).keys()],
+    let dayList = [...Array(nbrOfDay).keys()];
+
+    dayList = dayList.map((e) => e + 1);
+
+    console.log({
+      labels: dayList,
       datasets: datasets,
     });
     return {
-      labels: [...Array(31).keys()],
+      labels: dayList,
       datasets: datasets,
     };
   }
