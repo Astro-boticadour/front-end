@@ -157,7 +157,7 @@ export class ApiService {
               id: data.id,
               label: data.name,
               type: data.type,
-              modele: data.modele,
+              modele: data.model,
               isUsed: data.isUsed,
             } as ressource;
           });
@@ -453,7 +453,7 @@ export class ApiService {
     );
   }
 
-  public deleteProject(id: number) {
+  public deleteProject(id: number | undefined) {
     var headers_object = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + this.token,
@@ -532,7 +532,7 @@ export class ApiService {
     );
   }
 
-  public deleteRessource(id: number) {
+  public deleteRessource(id: number | undefined) {
     var headers_object = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + this.token,
@@ -543,6 +543,27 @@ export class ApiService {
     };
     return this._httpClient.delete<{ result: { id: number }; status: string }>(
       this.baseUrl + '/ressources/' + id + '/',
+      httpOptions
+    );
+  }
+
+  public majRessource(r: ressource): Observable<any>
+  {
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token,
+    });
+
+    const httpOptions = {
+      headers: headers_object,
+    };
+    return this._httpClient.patch(
+      this.baseUrl + '/ressources/'+r.id+'/',
+      {
+        name: r.label,
+        type: r.type,
+        model: r.modele,
+      },
       httpOptions
     );
   }

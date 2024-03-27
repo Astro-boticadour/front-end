@@ -5,4 +5,5 @@ export interface ressource {
   modele: string;
   isUsed: boolean;
   disabled?: boolean;
+  editing?: boolean;
 }
