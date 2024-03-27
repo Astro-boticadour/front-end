@@ -1,7 +1,12 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 export const administrationGuard: CanActivateFn = (route, state) => {
-  return inject(AuthService).isUserLogin();
+  if (inject(AuthService).isUserLogin()) {
+    return true;
+  } else {
+    inject(Router).navigate(['/home']);
+    return false;
+  }
 };
