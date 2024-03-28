@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { TRISTATECHECKBOX_VALUE_ACCESSOR } from 'primeng/tristatecheckbox';
 import { TypeEnum } from 'src/app/shared/enums/type.model';
 import { labelType } from 'src/app/shared/interfaces/labelType.interface';
@@ -34,19 +34,13 @@ export class ViewerComponent {
   public secondDropdownTypeOption: labelType[] | undefined;
   public secondDropdownTypeSelection: TypeEnum | undefined;
 
-  public data!: any;
+  public isAllInputDataComplete: boolean = false;
 
-  public set date(value: string) {
-    this._date = value;
-  }
+  public data!: any;
 
   public dateToShow!: string;
 
-  public get date(): string {
-    return this._date;
-  }
-
-  private _date!: string;
+  public date!: string;
 
   public error: string = '';
 
@@ -96,8 +90,25 @@ export class ViewerComponent {
     }
   }
 
+  public checkIfGeneratable() {
+    setTimeout(() => {
+      if (this.date)
+        if (
+          this.date.slice(6, 7) !== '_' &&
+          this.firstDropdownElementSelection &&
+          this.secondDropdownTypeSelection &&
+          this.firstDropdownTypeSelection
+        ) {
+          this.isAllInputDataComplete = true;
+        } else {
+          this.isAllInputDataComplete = false;
+        }
+    }, 1);
+  }
+
   public getDataTable(): void {
     this.error = '';
+
     if (
       this.date &&
       this.firstDropdownElementSelection &&
@@ -105,7 +116,7 @@ export class ViewerComponent {
       this.firstDropdownTypeSelection
     ) {
       var todayDate = new Date();
-      this.dateToShow = this._date;
+      this.dateToShow = this.date;
 
       var month = Number(this.date.slice(0, 2));
       var year = Number(this.date.slice(3, 9));
@@ -136,55 +147,5 @@ export class ViewerComponent {
           }
         });
     }
-
-    // if (this.date) {
-    //   if (
-    //     this.ressourceNumber &&
-    //     this.date &&
-
-    //   ) {
-    //     this.error = '';
-    //     this.loading = true;
-    //     this.apiService
-    //       .getTableData(this.ressourceNumber, this.date)
-    //       .subscribe((data) => {
-    //         this.loading = false;
-    //         if (data.status === 'success') {
-    //           if (data.result.length > 0) {
-    //             this.sessions = data.result;
-    //             for (let indexA = 0; indexA < this.sessions.length; indexA++) {
-    //               for (
-    //                 let indexB = 0;
-    //                 indexB < this.sessions[indexA].workingDays.length;
-    //                 indexB++
-    //               ) {
-    //                 if (this.sessions[indexA].workingDays[indexB] !== '') {
-    //                   this.sessions[indexA].workingDays[indexB] =
-    //                     Math.round(
-    //                       this.sessions[indexA].workingDays[indexB] * 100
-    //                     ) / 100;
-    //                   if (this.sessions[indexA].workingDays[indexB] < 0.05) {
-    //                     this.sessions[indexA].workingDays[indexB] = '';
-    //                   }
-    //                 }
-    //               }
-    //             }
-    //             this.error = '';
-    //           } else {
-    //             this.error = 'Aucune donnée';
-    //             this.sessions = [];
-    //           }
-    //         }
-    //       });
-    //   } else if (
-    //     Number(this.date.slice(0, 2)) > new Date().getMonth() + 1 ||
-    //     Number(this.date.slice(3, 9)) > new Date().getFullYear()
-    //   ) {
-    //     this.error = 'Date invalide';
-    //   } else {
-    //     this.sessions = [];
-    //     this.error = '';
-    //   }
-    // }
   }
 }

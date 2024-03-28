@@ -1,12 +1,14 @@
-<h2>Heures Totales</h2>
+<h3>Heures Totales</h3>
 <section class="input-section">
   <div class="input-field">
     <label for="dateInput">Mois et année</label>
     <p-inputMask
+      #dateInput
       id="dateInput"
       mask="99-9999"
       [(ngModel)]="date"
       placeholder="99-9999"
+      (onKeydown)="checkIfGeneratable()"
     ></p-inputMask>
     <div style="color: red">
       {{ error }}
@@ -15,14 +17,14 @@
 
   <div class="card flex justify-content-center">
     <div class="input-field">
-      <label for="dateInput">First</label>
+      <label for="dateInput">Données de</label>
       <p-dropdown
         [options]="firstDropdownTypeOption"
         optionLabel="label"
         optionValue="type"
         [(ngModel)]="firstDropdownTypeSelection"
         [filter]="true"
-        (onChange)="onFirstTypeChange()"
+        (onChange)="onFirstTypeChange(); checkIfGeneratable()"
       >
       </p-dropdown>
       <p-dropdown
@@ -32,6 +34,7 @@
         [optionValue]="labelValue"
         [(ngModel)]="firstDropdownElementSelection"
         [filter]="true"
+        (onChange)="checkIfGeneratable()"
       >
       </p-dropdown>
     </div>
@@ -40,19 +43,25 @@
       *ngIf="firstDropdownTypeSelection && firstDropdownElementSelection"
       class="input-field"
     >
-      <label for="dateInput">Second</label>
+      <label for="dateInput">En fonction de</label>
       <p-dropdown
         [options]="secondDropdownTypeOption"
         optionLabel="label"
         optionValue="type"
         [(ngModel)]="secondDropdownTypeSelection"
         [filter]="true"
+        (onChange)="checkIfGeneratable()"
       >
       </p-dropdown>
     </div>
   </div>
   <div>
-    <p-button (click)="getDataTable()" label="Générer"></p-button>
+    <p-button
+      id="button-generate"
+      [disabled]="!isAllInputDataComplete"
+      (click)="getDataTable()"
+      label="Générer"
+    ></p-button>
   </div>
 </section>
 

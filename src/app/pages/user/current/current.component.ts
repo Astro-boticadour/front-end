@@ -65,15 +65,39 @@ export class CurrentComponent implements OnInit {
               if (dataSession.result !== null) {
                 this.sessionInformation = dataSession.result;
                 this.sessionsStatus = SessionStatusEnum.Running;
+
+                this.timeSession =
+                  new Date().getTime() -
+                  new Date(this.sessionInformation.timestampStart).getTime();
+
+                this.apiService
+                  .getAllRessources()
+                  .subscribe((dataSession: any) => {
+                    this.ressourcesList = dataSession;
+                    if (this.sessionInformation.id) {
+                      this.apiService
+                        .getAllUsageOfSession(this.sessionInformation.id)
+                        .subscribe((x) => {
+                          this.ressourcesUsedId = [];
+
+                          x.forEach((data) => {
+                            this.ressourcesUsed[data.idRessource] = data;
+                            this.ressourcesUsedId.push(data.idRessource);
+                          });
+
+                          if (this.runningSessionElement) {
+                            this.runningSessionElement.calculateShownOption();
+                          }
+                          this.dataReceived = true;
+                          this.isDataLoading = false;
+                        });
+                    }
+                  });
               } else {
                 this.sessionsStatus = SessionStatusEnum.Undefined;
               }
               console.log(this.sessionInformation);
             });
-
-          this.apiService.getAllRessources().subscribe((dataSession: any) => {
-            this.ressourcesList = dataSession;
-          });
 
           this.websocketService.connect('sessions');
 
@@ -88,6 +112,10 @@ export class CurrentComponent implements OnInit {
                 loginUser: dataTempo.data.userLogin,
               } as session;
 
+              this.timeSession =
+                new Date().getTime() -
+                new Date(dataSessions.timestampStart).getTime();
+
               if (dataSessions.loginUser === dataUser.login) {
                 if (dataTempo.reason !== 'updated') {
                   this.sessionInformation = dataSessions;
@@ -100,39 +128,29 @@ export class CurrentComponent implements OnInit {
 
           this.websocketService.connect('ressources');
 
-          this.websocketService
-            .listen('ressources')
-            .subscribe((dataTempo: { reason: string; data: any }) => {
-              const dataSessions = {
-                id: dataTempo.data.id,
-                label: dataTempo.data.name,
-                type: dataTempo.data.type,
-                modele: dataTempo.data.model,
-                isUsed: dataTempo.data.isUsed,
-              } as ressource;
-
-              this.apiService.getAllRessources().subscribe((data) => {
-                this.ressourcesList = data;
-              });
-              if (this.sessionInformation.id) {
-                this.apiService
-                  .getAllUsageOfSession(this.sessionInformation.id)
-                  .subscribe((x) => {
-                    this.ressourcesUsedId = [];
-
-                    x.forEach((data) => {
-                      this.ressourcesUsed[data.idRessource] = data;
-                      this.ressourcesUsedId.push(data.idRessource);
-                    });
-
-                    if (this.runningSessionElement) {
-                      this.runningSessionElement.calculateShownOption();
-                    }
-                    this.dataReceived = true;
-                    this.isDataLoading = false;
-                  });
-              }
+          this.websocketService.listen('ressources').subscribe(() => {
+            this.apiService.getAllRessources().subscribe((data) => {
+              this.ressourcesList = data;
             });
+            if (this.sessionInformation.id) {
+              this.apiService
+                .getAllUsageOfSession(this.sessionInformation.id)
+                .subscribe((x) => {
+                  this.ressourcesUsedId = [];
+
+                  x.forEach((data) => {
+                    this.ressourcesUsed[data.idRessource] = data;
+                    this.ressourcesUsedId.push(data.idRessource);
+                  });
+
+                  if (this.runningSessionElement) {
+                    this.runningSessionElement.calculateShownOption();
+                  }
+                  this.dataReceived = true;
+                  this.isDataLoading = false;
+                });
+            }
+          });
         }
       });
     this.dataReceived = true;
@@ -158,11 +176,33 @@ export class CurrentComponent implements OnInit {
       this.apiService
         .createSession(this.sessionInformation)
         .subscribe((result) => {
-          this.timeSession = 60;
+          this.timeSession = 0;
 
           if (result.status === 'success') {
             this.sessionInformation.id = result.result.id;
             this.sessionsStatus = SessionStatusEnum.Running;
+
+            this.apiService.getAllRessources().subscribe((dataSession: any) => {
+              this.ressourcesList = dataSession;
+              if (this.sessionInformation.id) {
+                this.apiService
+                  .getAllUsageOfSession(this.sessionInformation.id)
+                  .subscribe((x) => {
+                    this.ressourcesUsedId = [];
+
+                    x.forEach((data) => {
+                      this.ressourcesUsed[data.idRessource] = data;
+                      this.ressourcesUsedId.push(data.idRessource);
+                    });
+
+                    if (this.runningSessionElement) {
+                      this.runningSessionElement.calculateShownOption();
+                    }
+                    this.dataReceived = true;
+                    this.isDataLoading = false;
+                  });
+              }
+            });
           }
         });
     }
@@ -226,7 +266,7 @@ export class CurrentComponent implements OnInit {
                   this.ressourcesUsed[x] = result.result;
                   this.messageService.add({
                     severity: 'success',
-                    summary: 'Ressource ajouté',
+                    summary: 'Ressource ajoutée',
                   });
                   changeNumber -= 1;
                 } else {
@@ -262,7 +302,7 @@ export class CurrentComponent implements OnInit {
                   changeNumber -= 1;
                   this.messageService.add({
                     severity: 'success',
-                    summary: 'Ressource retiré',
+                    summary: 'Ressource retirée',
                   });
                 } else {
                   this.messageService.add({

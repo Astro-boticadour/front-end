@@ -26,12 +26,12 @@ export class RunningsessionComponent {
   private literalTimestamp!: number;
 
   @Input() set timeSession(value: number) {
-    this.literalTimestamp = value;
-    if (value < 3600) {
-      this.shownSessionTime = Math.round(value / 60);
+    this.literalTimestamp = value / 1000;
+    if (this.literalTimestamp < 3600) {
+      this.shownSessionTime = Math.round(this.literalTimestamp / 60);
       this.sessionTimeUnite = 'minute(s)';
     } else {
-      this.shownSessionTime = Math.round(value / 3600);
+      this.shownSessionTime = Math.round(this.literalTimestamp / 3600);
       this.sessionTimeUnite = 'heure(s)';
     }
   }
@@ -52,7 +52,7 @@ export class RunningsessionComponent {
   @Output() updateSessionEvent = new EventEmitter<number[]>();
 
   constructor(private readonly apiService: ApiService) {
-    interval(5000).subscribe((data: any) => {
+    interval(5000).subscribe(() => {
       if (this.literalTimestamp) {
         this.literalTimestamp += 5;
 
@@ -76,21 +76,23 @@ export class RunningsessionComponent {
   }
 
   calculateShownOption() {
-    this.shownOptions = this._ressourcesList;
-    this.shownOptions.forEach((data: ressource) => {
-      if (data.id) {
-        if (
-          data.isUsed === true &&
-          !this._selectedRessource.includes(data.id)
-        ) {
-          data.disabled = true;
-        } else {
-          data.disabled = false;
+    if (this._ressourcesList) {
+      this.shownOptions = this._ressourcesList;
+      this.shownOptions.forEach((data: ressource) => {
+        if (data.id) {
+          if (
+            data.isUsed === true &&
+            !this._selectedRessource.includes(data.id)
+          ) {
+            data.disabled = true;
+          } else {
+            data.disabled = false;
+          }
         }
-      }
-    });
-    /* this.shownOptions = this.ressourcesList.filter(
+      });
+      /* this.shownOptions = this.ressourcesList.filter(
       (data) => data.isUsed === 0 ||
     );*/
+    }
   }
 }
