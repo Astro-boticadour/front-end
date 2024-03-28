@@ -62,16 +62,16 @@ export class ProjectsComponent {
     return 1;
   }
 
-  public delete(id:number, label:String)
+  public delete(p: project)
   {
-    if(confirm("Souhaitez-vous supprimer l'utilisateur " + label +" ?"))
+    if(confirm("Souhaitez-vous supprimer le projet " + p.label +" ? Cette action est irréversible."))
     {
-    this.apiService.deleteProject(id)
+    this.apiService.deleteProject(p.id)
     .subscribe((data) => {
       this.getTableData();
       if (data.status === 'success') 
       {
-        alert('Utilisateur '+label+' supprimée');
+        alert('Projet '+p.label+' supprimée');
       } else {
         alert('erreur');
       }
@@ -92,11 +92,10 @@ export class ProjectsComponent {
 
   public edit(e: project)
   {
-    e.editing = true;
     e.dateStart = new Date(e.dateStart);
     e.dateEnd = new Date(e.dateEnd);
     this.tableTemp = {label: e.label, dateStart: e.dateStart, dateEnd :e.dateEnd, isFinished : e.isFinished, description : e.description};
-    console.log(this.tableTemp);
+    e.editing = true;
   }
 
   public saveEdit(e: project)
@@ -106,13 +105,19 @@ export class ProjectsComponent {
       return 0;
     }
 
+    if( e.label === this.tableTemp.label && e.dateStart === this.tableTemp.dateStart && e.dateEnd === this.tableTemp.dateEnd && e.isFinished === this.tableTemp.isFinished && e.description === this.tableTemp.description)
+    {
+      e.editing = false;
+      return 0;
+    }
+
     this.apiService
       .majProject(e)
       .subscribe((data) => {
         this.getTableData();
         if (data.status === 'success') {
-          e.editing = false;
           alert('projet modifié');
+          e.editing = false;
         } else {
           alert('erreur');
         }
@@ -121,15 +126,12 @@ export class ProjectsComponent {
   } 
   
   public cancelEdit(e: project)
-  {
-    console.log(e);
-    console.log(this.tableTemp);
+{
     e.label = this.tableTemp.label;
     e.dateStart = this.tableTemp.dateStart;
     e.dateEnd = this.tableTemp.dateEnd;
     e.isFinished = this.tableTemp.isFinished;
     e.description = this.tableTemp.description;
     e.editing = false;
-    console.log(e);
   }
 }

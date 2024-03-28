@@ -14,6 +14,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
 import { AdministrationComponent } from './administration.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { AdministrationComponent } from './administration.component';
     ProgressSpinnerModule,
     DropdownModule,
     TabViewModule,
+    ConfirmDialogModule,
+    ToastModule,
+    ConfirmPopupModule,
   ],
 })
 export class AdministrationModule {}

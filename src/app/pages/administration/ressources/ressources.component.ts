@@ -18,6 +18,8 @@ export class RessourcesComponent {
 
   typeRobot!: string[];
 
+  ressourceTemp!: ressource;
+
   constructor(private apiService: ApiService) {
     this.getTableData();
 
@@ -28,11 +30,12 @@ export class RessourcesComponent {
     this.apiService.getAllRessources().subscribe((data) => {
       this.tableData = data;
     });
+    //this.tableData.forEach((e: ressource) => {e.editing = false})
   }
 
   public create() {
     if (!(this.label && this.type && this.modele)) {
-      alert('veuillez remplir tous les champs avant de créer un projet');
+      alert('veuillez remplir tous les champs avant de créer une ressource');
       return 0;
     }
     this.apiService
@@ -52,22 +55,61 @@ export class RessourcesComponent {
     return 1;
   }
   
-  public delete(id:number, label:String)
+  public delete(r: ressource)
   {
-    if(confirm("Souhaitez-vous supprimer la ressource " + label +" ?"))
+    if(confirm("Souhaitez-vous supprimer la ressource " + r.label +" ?  Cette action est irréversible."))
     {
-    this.apiService.deleteRessource(id)
+    this.apiService.deleteRessource(r.id)
     .subscribe((data) => {
       this.getTableData();
       if (data.status === 'success') 
       {
-        alert('ressource '+label+' supprimée');
+        alert('ressource '+r.label+' supprimée');
       } else {
         alert('erreur');
       }
     });
   }
-
     return 0;
+  }
+
+  public edit(r: ressource)
+  {
+    this.ressourceTemp = { label: r.label, type: r.type, modele: r.modele, isUsed : r.isUsed};
+    r.editing = true;
+  }
+
+  public saveEdit(r: ressource)
+  {
+    if (!(r.label && r.type && r.modele)) {
+      alert('veuillez remplir tous les champs avant de modifier une ressource');
+      return 0;
+    }
+
+    if (r.label === this.ressourceTemp.label && r.type === this.ressourceTemp.type && r.modele === this.ressourceTemp.modele)
+    {
+      r.editing = false;
+      return 0;
+    }
+    this.apiService
+      .majRessource(r)
+      .subscribe((data) => {
+        this.getTableData();
+        if (data.status === 'success') {
+          alert('ressource modifié');
+          r.editing = false;
+        } else {
+          alert('erreur');
+        }
+      });
+    return 1;
+  }
+  
+  public cancelEdit(r: ressource)
+  {
+    r.label = this.ressourceTemp.label;
+    r.type = this.ressourceTemp.type;
+    r.modele = this.ressourceTemp.modele;
+    r.editing = false;
   }
 }

@@ -94,14 +94,14 @@
           </td>
           <td>{{ project.description }}</td>
           <td class="delete-column"><p-button icon="pi pi-pencil" severity="warning" (click)="edit(project)" ></p-button></td>
-          <td class="delete-column"><p-button icon="pi pi-trash" severity="danger" (click)="delete(project.id, project.label)" ></p-button></td>
+          <td class="delete-column"><p-button icon="pi pi-trash" severity="danger" (click)="delete(project)" ></p-button></td>
         </tr>
         <tr *ngIf="project.editing">
-          <td><input type="text" [(ngModel)]="project.label"></td>
+          <td><input type="text" pInputText [(ngModel)]="project.label"></td>
           <td><p-calendar appendTo="body" [(ngModel)]="project.dateStart" dateFormat="dd/mm/yy"></p-calendar></td>
           <td><p-calendar appendTo="body" [(ngModel)]="project.dateEnd" dateFormat="dd/mm/yy"></p-calendar></td>
-          <td><input type="checkbox" [(ngModel)]="project.isFinished" ></td>
-          <td><input type="textarea" [(ngModel)]="project.description" ></td>
+          <td><p-checkbox [(ngModel)]="project.isFinished" [binary]="true" inputId="binary"></p-checkbox></td>
+          <td><input style="min-width:30vh;" type="textarea" pInputText [(ngModel)]="project.description" ></td>
           <td class="delete-column"><p-button icon="pi pi-check" severity="info" (click)="saveEdit(project)" ></p-button></td>
           <td class="delete-column"><p-button icon="pi pi-times" severity="danger" (click)="cancelEdit(project)" ></p-button></td>
         </tr>
